@@ -22,7 +22,7 @@ public class BackgroudLayer extends Box2DLayer {
 	WYSize s;
 
 	float width, height;
-	int intital = 1;
+	// 绑定图片
 	Box2DRender render;
 	static float SPEED = -2;
 
