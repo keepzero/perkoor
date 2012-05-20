@@ -1,0 +1,7 @@
+/bin
+project.properties
+.project
+.classpath
+/.settings
+*~
+.directory
