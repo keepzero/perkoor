@@ -47,7 +47,7 @@ public class RoadLayer extends Box2DLayer {
 	public void update(float delta){
 		super.update(delta);
 		
-		f.getBody().setTransform(CharacterLayer.carPos.x, 10f, 0f);
+		//f.getBody().setTransform(CharacterLayer.carPos.x, 10f, 0f);
 
 	}
 }

@@ -23,38 +23,37 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public  class CharacterLayer extends Box2DLayer {
 
-	Body body;
-	Fixture f;
-	WYSize s;
-	float Y_sta=0,Y_end=0;
-	float X_sta=0,X_end=0;
-	static float hight =10;
-	protected static WYPoint carPos=WYPoint.make(0, 0);
+	Body body;    // 申明人物刚体
+	Fixture f;    //声明刚体附加属性
+	WYSize s;     //声明屏幕尺寸
+	float Y_sta=0,Y_end=0;   //初始与终止 y 轴   坐标 触摸点声明
+	float X_sta=0,X_end=0;   //初始与终止x 轴   坐标 触摸点声明
+	static float hight =10;  //跳跃高度声明
 	public CharacterLayer(){
-		s = Director.getInstance().getWindowSize();
-		mWorld.setGravity(0, -10);
-		mBox2D.setDebugDraw(false);
-		mBox2D.setPosition(s.width / 2, 0);
-		Box2DRender render = Box2DRender.make();
-		mBox2D.setBox2DRender(render);
-		setTouchEnabled(true);
+		s = Director.getInstance().getWindowSize();//获取屏幕尺寸
+		mWorld.setGravity(0, -10);//设置世界的重力加速度
+		mBox2D.setDebugDraw(false);//设置刚体贴图模式，表示可以进行贴图
+		mBox2D.setPosition(s.width / 2, 0);//初始位置
+		Box2DRender render = Box2DRender.make();//获取绑定render，用于贴图与刚体的绑定
+		mBox2D.setBox2DRender(render);//mBox2D设置绑定
+		setTouchEnabled(true);//设置是否触摸
 
 
 		{//road
-			BodyDef bd_road = BodyDef.make();
-			bd_road.setPosition(0, 0);
-			Body b_road = mWorld.createBody(bd_road);
-			bd_road.destroy();
+			BodyDef bd_road = BodyDef.make();//刚体属性定义
+			bd_road.setPosition(0, 0);//位置
+			Body b_road = mWorld.createBody(bd_road);//创建刚体，赋予BodyDef属性
+			bd_road.destroy();//摧毁BodyDef，每次创建完必须摧毁
 			
-			EdgeShape es = EdgeShape.make();
+			EdgeShape es = EdgeShape.make();//形状声明
 			
-			FixtureDef fixDef = FixtureDef.make();
-			fixDef.setShape(es);
+			FixtureDef fixDef = FixtureDef.make();//声明关联属性，可进行对刚体属性添加
+			fixDef.setShape(es);//FixtureDef设置形状属性
 		
 
 			
-			es.setEndpoints(-20f, 1.5f, mBox2D.pixel2Meter(s.width),1.5f);
-			b_road.createFixture(fixDef);
+			es.setEndpoints(-20f, 1.5f, mBox2D.pixel2Meter(s.width),1.5f);//位置，
+			b_road.createFixture(fixDef);//创建Fixture
 			fixDef.destroy();
 			
 			
@@ -65,21 +64,22 @@ public  class CharacterLayer extends Box2DLayer {
 		{//picture
 			BodyDef bd = BodyDef.make();
 			bd.setPosition(0f, 3f);
-			bd.setType(Body.TYPE_DYNAMIC);
+			bd.setType(Body.TYPE_DYNAMIC);//刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd); 
 			bd.destroy();
 			
 			
 			PolygonShape box1 = PolygonShape.make();
-			box1.setAsBox(0.5f, 0.5f);
+			box1.setAsBox(0.5f, 0.5f);//设置形状
 			FixtureDef fd = FixtureDef.make();
 			fd.setDensity(1.0f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
 			fd.destroy();
-			FixtureAnimation anim = FixtureAnimation.make(0.2f,R.drawable.moving1,R.drawable.moving2,R.drawable.moving3);
-			anim.setLoop(true);
-			anim.start(f);
+			FixtureAnimation anim = FixtureAnimation.make(0.2f,R.drawable.moving1,R.drawable.moving2,R.drawable.moving3);//动画帧等版定和设置
+			
+			anim.setLoop(true);//设置是否循环显示
+			anim.start(f);//启动动画显示
 			
 //			Texture2D text = Texture2D.makePNG(R.drawable.icon);
 //			render.bindTexture(f, text);
@@ -94,7 +94,6 @@ public  class CharacterLayer extends Box2DLayer {
 		
 		// move the scene, keep the car center
 		//WYSize s1 = Director.getInstance().getWindowSize();
-		carPos = body.getPosition();
 		
 		//float pX = mBox2D.meter2Pixel(carPos.x);
 		//mBox2D.setPosition(pX + s1.width / 2, ResolutionIndependent.resolveDp(100));
@@ -119,28 +118,28 @@ public  class CharacterLayer extends Box2DLayer {
 		X_end=loc.x;
 		Y_end = loc.y;
 		float tital_x=0, tital_y=0;
-		tital_y = Y_end-Y_sta;
-		tital_x =X_end-X_sta;
-		System.out.println("jump");
-		if(tital_x>0 && tital_y>0){
+		tital_y = Y_end-Y_sta;     //y轴距离差
+		tital_x =X_end-X_sta;      //x轴距离差
+		
+		
+		if(tital_x>0 && tital_y>0){  //判断是否起跳
 			System.out.println("jump");
 			jump();
 		}
-		if(tital_x>0 && tital_y<0){
+		if(tital_x>0 && tital_y<0){  //判断下蹲
 			squat();
 		}
 		return true;
 	}
-	public void jump(){
-		if(body.getLinearVelocity().y==0){
+	public void jump(){  //起跳
+		if(body.getLinearVelocity().y==0){  //防止连跳，判断y的速度是否为0
 			WYPoint WH = WYPoint.make(0f, hight);
-			body.setLinearVelocity(WH);
+			body.setLinearVelocity(WH);   //设置速度
 		}
 		
 		//body.setLinearVelocity(WYPoint.make(0, 0));
 	}
-	public void squat(){
+	public void squat(){ //下蹲
 		
 	}
-
 }

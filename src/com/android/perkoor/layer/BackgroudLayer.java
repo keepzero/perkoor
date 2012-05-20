@@ -76,6 +76,7 @@ public class BackgroudLayer extends Box2DLayer {
 			f_back2 = back.createFixture(fd);
 			fd.destroy();
 
+			//图片与刚体的绑定
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);
 			render.bindTexture(f_back2, text);
 			text.autoRelease();
@@ -96,7 +97,7 @@ public class BackgroudLayer extends Box2DLayer {
 		if (f_back1.getBody().getPosition().x < mBox2D.pixel2Meter(-width / 2)) {
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);// 不同背景切换
 			render.bindTexture(f_back1, text);
-			f_back1.getBody().setTransform(
+			f_back1.getBody().setTransform(                    //刚体位置
 					mBox2D.pixel2Meter(width + (width / 2)),
 					mBox2D.pixel2Meter(height / 2), 0);
 			text.autoRelease();
