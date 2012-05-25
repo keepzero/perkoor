@@ -1,7 +1,8 @@
 package com.android.perkoor.layer;
 
+import android.util.Log;
+
 import com.android.perkoor.R;
-import com.android.perkoor.R.drawable;
 import com.wiyun.engine.box2d.Box2DRender;
 import com.wiyun.engine.box2d.collision.PolygonShape;
 import com.wiyun.engine.box2d.dynamics.Body;
@@ -16,8 +17,9 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class BackgroudLayer extends Box2DLayer {
 
-	// 刚体属性设置
+	// 背景贴图 Fixture -刚体属性设置
 	Fixture f_back1, f_back2;
+	
 	// 屏幕大小
 	WYSize s;
 
@@ -32,40 +34,43 @@ public class BackgroudLayer extends Box2DLayer {
 		setTouchEnabled(false);
 		mBox2D.setDebugDraw(false);
 		s = Director.getInstance().getWindowSize();
-		width = s.width;
+		width  = s.width;
 		height = s.height;
-
+		
 		{
+			//背景定义，移动，速度
 			BodyDef back_df = BodyDef.make();
 			back_df.setPosition(mBox2D.pixel2Meter(width / 2),
 					mBox2D.pixel2Meter(height / 2));
-			System.out.println(mBox2D.pixel2Meter(width / 2));
+			//System.out.println(mBox2D.pixel2Meter(width / 2));
+			Log.i("position", String.valueOf(mBox2D.pixel2Meter(width / 2)));
 			back_df.setType(Body.TYPE_DYNAMIC);
-			Body back = mWorld.createBody(back_df);
-			back.setLinearVelocity(WYPoint.make(SPEED, 0));
+			Body background = mWorld.createBody(back_df);
+			background.setLinearVelocity(WYPoint.make(SPEED, 0));
 			back_df.destroy();
 
+			//背景形状
 			PolygonShape shape = PolygonShape.make();
 			shape.setAsBox(mBox2D.pixel2Meter(width / 2),
 					mBox2D.pixel2Meter(height / 2));
 			FixtureDef fd = FixtureDef.make();
 			fd.setShape(shape);
-			f_back1 = back.createFixture(fd);
+			f_back1 = background.createFixture(fd);
 			fd.destroy();
 
+			//背景贴图
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);
 			render.bindTexture(f_back1, text);
 			text.autoRelease();
 		}
 
 		{
-
 			BodyDef back_df = BodyDef.make();
 			back_df.setPosition(mBox2D.pixel2Meter(width + (width / 2)),
 					mBox2D.pixel2Meter(height / 2));
 			back_df.setType(Body.TYPE_DYNAMIC);
-			Body back = mWorld.createBody(back_df);
-			back.setLinearVelocity(WYPoint.make(SPEED, 0));
+			Body background = mWorld.createBody(back_df);
+			background.setLinearVelocity(WYPoint.make(SPEED, 0));
 			back_df.destroy();
 
 			PolygonShape shape = PolygonShape.make();
@@ -73,23 +78,23 @@ public class BackgroudLayer extends Box2DLayer {
 					mBox2D.pixel2Meter(height / 2));
 			FixtureDef fd = FixtureDef.make();
 			fd.setShape(shape);
-			f_back2 = back.createFixture(fd);
+			f_back2 = background.createFixture(fd);
 			fd.destroy();
 
-			//图片与刚体的绑定
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);
 			render.bindTexture(f_back2, text);
 			text.autoRelease();
 		}
 
+		// 调度？
 		schedule(new TargetSelector(this, "update(float)", new Object[] { 0f }));
 	}
 
 	public void update(float delta) {
 		super.update(delta);
 		// f_back.getBody().setTransform(Test_Box2d.carPos.x/2, 10f, 0f);
+		
 		running();
-
 	}
 
 	public void running() {
@@ -112,7 +117,7 @@ public class BackgroudLayer extends Box2DLayer {
 		}
 	}
 
-	public int mapImg(int i) {
+	/*public int mapImg(int i) {
 		int id = 0;
 		switch (i) {
 		case 1:
@@ -123,5 +128,5 @@ public class BackgroudLayer extends Box2DLayer {
 			break;
 		}
 		return id;
-	}
+	}*/
 }

@@ -1,10 +1,7 @@
 package com.android.perkoor.layer;
 
-
 import android.view.MotionEvent; 
-
 import com.android.perkoor.R;
-import com.android.perkoor.R.drawable;
 import com.wiyun.engine.box2d.Box2DRender; 
 import com.wiyun.engine.box2d.FixtureAnimation;
 import com.wiyun.engine.box2d.collision.EdgeShape;
@@ -14,12 +11,17 @@ import com.wiyun.engine.box2d.dynamics.BodyDef;
 import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.nodes.Director;
-
-import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
-
 import com.wiyun.engine.utils.TargetSelector;
+
+/*
+ * # Android 命名规范                                                                      
+ * - 非公有，非静态字段以 m 开头   
+ * - 静态域命名以 s 开头    
+ * - 其他字段以小写字母开头    
+ * - public static final 字段（常量）全部大写，并用下划线连起来
+ */
 
 public  class CharacterLayer extends Box2DLayer {
 
