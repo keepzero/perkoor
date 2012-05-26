@@ -69,7 +69,7 @@ public class BackgroudLayer extends Box2DLayer {
 			fd.destroy();
 
 			//背景贴图：到现在才贴上图
-			Texture2D text = Texture2D.makeJPG(R.drawable.back);
+			Texture2D text = Texture2D.makeJPG(R.drawable.background);
 			render.bindTexture(f_back1, text);
 			text.autoRelease();
 		}
@@ -91,7 +91,7 @@ public class BackgroudLayer extends Box2DLayer {
 			f_back2 = background2.createFixture(fd);
 			fd.destroy();
 
-			Texture2D text = Texture2D.makeJPG(R.drawable.back);
+			Texture2D text = Texture2D.makeJPG(R.drawable.background);
 			render.bindTexture(f_back2, text);
 			text.autoRelease();
 		}
@@ -110,7 +110,7 @@ public class BackgroudLayer extends Box2DLayer {
 	public void running() {
 
 		if (f_back1.getBody().getPosition().x < mBox2D.pixel2Meter(-width / 2)) {
-			Texture2D text = Texture2D.makeJPG(R.drawable.back);// 不同背景切换
+			Texture2D text = Texture2D.makeJPG(R.drawable.background);// 不同背景切换
 			render.bindTexture(f_back1, text);
 			f_back1.getBody().setTransform(                    //刚体位置
 					mBox2D.pixel2Meter(width + (width / 2)),
@@ -118,7 +118,7 @@ public class BackgroudLayer extends Box2DLayer {
 			text.autoRelease();
 		}
 		if (f_back2.getBody().getPosition().x < mBox2D.pixel2Meter(-width / 2)) {
-			Texture2D text = Texture2D.makeJPG(R.drawable.back);// 不同背景切换
+			Texture2D text = Texture2D.makeJPG(R.drawable.background);// 不同背景切换
 			render.bindTexture(f_back1, text);
 			f_back2.getBody().setTransform(
 					mBox2D.pixel2Meter(width + (width / 2)),
