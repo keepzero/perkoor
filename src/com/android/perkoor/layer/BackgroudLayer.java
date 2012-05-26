@@ -17,11 +17,11 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class BackgroudLayer extends Box2DLayer {
 
-	// 背景贴图 Fixture -刚体属性设置
+	// 背景贴图 Fixture
 	Fixture f_back1, f_back2;
 	
 	// 屏幕大小
-	WYSize s;
+	WYSize size;
 
 	float width, height;
 	// 绑定图片
@@ -29,36 +29,46 @@ public class BackgroudLayer extends Box2DLayer {
 	static float SPEED = -2;
 
 	public BackgroudLayer() {
+		
+		// place box2d to center of bottom edge
+		// mBox2D.setPosition(size.width / 2, size.height / 2);
+		
 		render = Box2DRender.make();
 		mBox2D.setBox2DRender(render);
 		setTouchEnabled(false);
 		mBox2D.setDebugDraw(false);
-		s = Director.getInstance().getWindowSize();
-		width  = s.width;
-		height = s.height;
+		size = Director.getInstance().getWindowSize();
+		width  = size.width;   //30
+		height = size.height;  //20
 		
 		{
 			//背景定义，移动，速度
 			BodyDef back_df = BodyDef.make();
+			//背景位置定义：
 			back_df.setPosition(mBox2D.pixel2Meter(width / 2),
 					mBox2D.pixel2Meter(height / 2));
 			//System.out.println(mBox2D.pixel2Meter(width / 2));
-			Log.i("position", String.valueOf(mBox2D.pixel2Meter(width / 2)));
+			Log.i("position", 
+					String.valueOf(mBox2D.pixel2Meter(width / 2))
+					+ " " + String.valueOf(mBox2D.pixel2Meter(height / 2)));
 			back_df.setType(Body.TYPE_DYNAMIC);
-			Body background = mWorld.createBody(back_df);
-			background.setLinearVelocity(WYPoint.make(SPEED, 0));
+			//创建背景刚体
+			Body background1 = mWorld.createBody(back_df);
+			//设置速度
+			background1.setLinearVelocity(WYPoint.make(SPEED, 0));
 			back_df.destroy();
 
-			//背景形状
-			PolygonShape shape = PolygonShape.make();
+			//背景形状：多边形
+			PolygonShape shape = PolygonShape.make(); 
+			//设置为一个矩形 .setAsBox(float x, float, y) x:宽的一半 y:高的一半
 			shape.setAsBox(mBox2D.pixel2Meter(width / 2),
 					mBox2D.pixel2Meter(height / 2));
 			FixtureDef fd = FixtureDef.make();
 			fd.setShape(shape);
-			f_back1 = background.createFixture(fd);
+			f_back1 = background1.createFixture(fd);
 			fd.destroy();
 
-			//背景贴图
+			//背景贴图：到现在才贴上图
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);
 			render.bindTexture(f_back1, text);
 			text.autoRelease();
@@ -69,8 +79,8 @@ public class BackgroudLayer extends Box2DLayer {
 			back_df.setPosition(mBox2D.pixel2Meter(width + (width / 2)),
 					mBox2D.pixel2Meter(height / 2));
 			back_df.setType(Body.TYPE_DYNAMIC);
-			Body background = mWorld.createBody(back_df);
-			background.setLinearVelocity(WYPoint.make(SPEED, 0));
+			Body background2 = mWorld.createBody(back_df);
+			background2.setLinearVelocity(WYPoint.make(SPEED, 0));
 			back_df.destroy();
 
 			PolygonShape shape = PolygonShape.make();
@@ -78,7 +88,7 @@ public class BackgroudLayer extends Box2DLayer {
 					mBox2D.pixel2Meter(height / 2));
 			FixtureDef fd = FixtureDef.make();
 			fd.setShape(shape);
-			f_back2 = background.createFixture(fd);
+			f_back2 = background2.createFixture(fd);
 			fd.destroy();
 
 			Texture2D text = Texture2D.makeJPG(R.drawable.back);
