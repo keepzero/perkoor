@@ -9,6 +9,7 @@ import com.wiyun.engine.box2d.dynamics.BodyDef;
 import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.nodes.Director;
+import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
@@ -28,6 +29,8 @@ public class RoadLayer extends Box2DLayer {
 		BodyDef road_df = BodyDef.make();
 		road_df.setPosition(s.width,5);
 		Body road = mWorld.createBody(road_df);
+		road.setType(Body.TYPE_KINEMATIC);
+		road.setLinearVelocity(WYPoint.make(-3f, 0));
 		road_df.destroy();
 		
 		PolygonShape shape = PolygonShape.make(); 
@@ -38,6 +41,14 @@ public class RoadLayer extends Box2DLayer {
 		fd.destroy();
 		
 		Texture2D text = Texture2D.makePNG(R.drawable.icon);
+//		Sprite sprite = Sprite.make(text);
+//	
+//		Sprite sprite1 = Sprite.make(text);
+//		sprite.setPosition(0, 0);
+//		sprite1.setPosition(10f, 10f);
+//		addChild(sprite1);
+//		addChild(sprite);
+		
 		render.bindTexture(f, text);
 		
 		

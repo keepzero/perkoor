@@ -1,34 +1,38 @@
 package com.android.perkoor.layer;
 
 
-import android.view.MotionEvent; 
+import android.view.MotionEvent;  
 
 import com.android.perkoor.R;
-import com.android.perkoor.R.drawable;
 import com.wiyun.engine.box2d.Box2DRender; 
 import com.wiyun.engine.box2d.FixtureAnimation;
+import com.wiyun.engine.box2d.PELoader;
 import com.wiyun.engine.box2d.collision.EdgeShape;
 import com.wiyun.engine.box2d.collision.PolygonShape;
 import com.wiyun.engine.box2d.dynamics.Body;
 import com.wiyun.engine.box2d.dynamics.BodyDef;
 import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.FixtureDef;
+import com.wiyun.engine.box2d.dynamics.World.IContactListener;
 import com.wiyun.engine.nodes.Director;
+import com.wiyun.engine.nodes.Sprite;
 
-import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 
 import com.wiyun.engine.utils.TargetSelector;
 
-public  class CharacterLayer extends Box2DLayer {
+public  class CharacterLayer extends Box2DLayer implements IContactListener{
 
 	Body body;    // 申明人物刚体
+	Body bodyroof;
+	Sprite sprite;
 	Fixture f;    //声明刚体附加属性
 	WYSize s;     //声明屏幕尺寸
 	float Y_sta=0,Y_end=0;   //初始与终止 y 轴   坐标 触摸点声明
 	float X_sta=0,X_end=0;   //初始与终止x 轴   坐标 触摸点声明
 	static float hight =10;  //跳跃高度声明
+	static int Speed = -5;
 	public CharacterLayer(){
 		s = Director.getInstance().getWindowSize();//获取屏幕尺寸
 		mWorld.setGravity(0, -10);//设置世界的重力加速度
@@ -56,14 +60,12 @@ public  class CharacterLayer extends Box2DLayer {
 			b_road.createFixture(fixDef);//创建Fixture
 			fixDef.destroy();
 			
-			
 		}
 		
-		
-		
+
 		{//picture
 			BodyDef bd = BodyDef.make();
-			bd.setPosition(0f, 3f);
+			bd.setPosition(0f, 10f);
 			bd.setType(Body.TYPE_DYNAMIC);//刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd); 
 			bd.destroy();
@@ -86,12 +88,27 @@ public  class CharacterLayer extends Box2DLayer {
 		}
 		
 		
+		{
+			
+			PELoader mLoader = PELoader.make(R.raw.shapedefs_roof7);
+			mBox2D.setMeterPixels(mLoader.getMeterPixels());
+			bodyroof = mLoader.createBodyByName(mBox2D,"roof_7");
+			
+			sprite = Sprite.make(R.drawable.roof_7);
+			sprite.autoRelease();
+			sprite.setPosition(100f, 100f);
+			bodyroof.setUserData(sprite);
+			bodyroof.setLinearVelocity(WYPoint.make(-4f, 0f));
+			mBox2D.addChild(sprite);
+		}
+		
+		
 
 		schedule(new TargetSelector(this, "update(float)", new Object[] { 0f }));
 	}
 	public void update(float delta) {
 		super.update(delta);
-		
+		sprite.setPosition(WYPoint.make(bodyroof.getPosition().x, bodyroof.getPosition().y));
 		// move the scene, keep the car center
 		//WYSize s1 = Director.getInstance().getWindowSize();
 		
@@ -140,6 +157,26 @@ public  class CharacterLayer extends Box2DLayer {
 		//body.setLinearVelocity(WYPoint.make(0, 0));
 	}
 	public void squat(){ //下蹲
+		
+	}
+	@Override
+	public void beginContact(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void endContact(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void postSolve(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void preSolve(int arg0, int arg1) {
+		// TODO Auto-generated method stub
 		
 	}
 }
