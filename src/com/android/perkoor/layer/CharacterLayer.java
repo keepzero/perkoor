@@ -30,16 +30,15 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float tital_x = 0, tital_y = 0; //手指滑动距离
 	static float hight = 5; // 跳跃高度声明
 	static float highter = 12;
-	static int Speed = 10; 
+	static int Speed = 12; 
 	
 	//box2d 的位置
 	int mLocation = 2500;
 
 	public CharacterLayer() {
 		
-		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
-		mWorld.setGravity(0, -15);// 设置世界的重力加速度
+		mWorld.setGravity(0, -20);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
@@ -82,7 +81,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		WYPoint carPos = body.getPosition();
 		float pX = mBox2D.meter2Pixel(carPos.x);
 		
-		mBox2D.setPosition(-pX+s.width/3 ,0);
+		// 设置 Box2D 世界跟随人物
+		mBox2D.setPosition(-pX + s.width/3 ,0);
 		
 		/*mLocation += 500;
 		if(pX > mLocation){
@@ -133,51 +133,35 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	public void jump() { // 起跳
 		
 		WYPoint WH;
-		if(tital_y > 20){
+		if(tital_y > 250){
 			WH = WYPoint.make(Speed, highter);
-		}else{
+			body.setLinearVelocity(WH); // 设置速度
+		}else if (tital_y > 100) {
 			WH = WYPoint.make(Speed, hight);
+			body.setLinearVelocity(WH); // 设置速度
 		}
-		body.setLinearVelocity(WH); // 设置速度
-
 	}
 	
 	public void setRoof(){
 		
-		Roof roof = RoofFactory.createRoof(1, mWorld, mBox2D, 0);
+		RoofFactory.createRoof(1, mWorld, mBox2D, 0);
 		//roof.setLocation(s.width/3);
 		
-		for(int i = 0; i < 6; i++){
-			roof = RoofFactory.createRoof(1, mWorld, mBox2D, s.width * i);
+		for(int i = 1; i <= 7; i++){
+			RoofFactory.createRoof(Roof.getRandom(7), mWorld, mBox2D, s.width * i);
+			System.out.println(s.width * i);
 			//roof.setLocation(s.width * i);
+			
+			Log.i("location", String.valueOf(s.width * i));
 		}
 		
-/*		roof_2 = new Roof2(mWorld, mBox2D);
-		roof_2.set_border(s.width/3);
-		
-		roof_3 = new Roof3(mWorld, mBox2D);
-		roof_3.set_border(s.width);
-		
-		roof_4 = new Roof4(mWorld, mBox2D);
-		roof_4.set_border(s.width*0.5f);
-		
-		roof_5 = new Roof5(mWorld, mBox2D);
-		roof_5.set_border(s.width*1.5f);
-		
-		roof_6 = new Roof6(mWorld, mBox2D);
-		roof_6.set_border(s.width*2f);
-		Log.i("location", String.valueOf(s.width * 2f));
-		
-		roof_7 = new Roof7(mWorld, mBox2D);
-		roof_7.set_border(s.width*2.5f);*/	
-		Log.i("location", String.valueOf(s.width * 2.5f));
+		//Log.i("location", String.valueOf(s.width * 2.5f));
 
 	}
 
 	
 	public void fresh(){
-		/*roof_1.updata_img();
-		roof_2.updata_img();*/
+
 	}
 	
 	public void squat() { // 下蹲
@@ -205,6 +189,6 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	@Override
 	public void preSolve(int arg0, int arg1) {
 		// TODO Auto-generated method stub
-
+	
 	}
 }
