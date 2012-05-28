@@ -11,10 +11,6 @@ import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 
 public class Roof6 extends Roof{
-
-	protected Sprite sprite;
-	
-	protected Body bodyRoof;
 	
 	public Roof6(World world,Box2D box2d, float x){
 		super(world, box2d);

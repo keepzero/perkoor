@@ -5,13 +5,8 @@ import com.wiyun.engine.box2d.dynamics.World;
 
 public class RoofFactory {
 
-	/*
-	 * protected static World mWorld; protected static Box2D mBox2d;
-	 * 
-	 * public RoofFactory(World world,Box2D box2d){ mWorld = world; mBox2d =
-	 * box2d; }
-	 */
-
+	// 工厂模式
+	// 创建一个 Roof
 	public static Roof createRoof(int i, World w, Box2D b, float x) {
 
 		switch (i) {
