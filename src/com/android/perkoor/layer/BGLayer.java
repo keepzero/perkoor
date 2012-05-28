@@ -19,16 +19,16 @@ import com.wiyun.engine.utils.ResolutionIndependent;
 
 public class BGLayer extends Layer implements INodeVirtualMethods {
 
+	Sprite mWhite;
+	
 	// 背景精灵
 	Sprite mBackground1;
 	Sprite mBackground2;
 	Sprite mBackground3;
-	
-	//背景的背景.....
-	Sprite evening;
 
 	public BGLayer() {
 		setJavaVirtualMethods(this);
+		setTouchEnabled(false);
 
 		// 设置是否绘制节点
 		setNoDraw(true);
@@ -38,14 +38,15 @@ public class BGLayer extends Layer implements INodeVirtualMethods {
 		mBackground2 = Sprite.make(R.drawable.background2);
 		mBackground3 = Sprite.make(R.drawable.background1);	
 		
-		//evening = Sprite.make(R.drawable.evening);
+		mWhite = Sprite.make(R.drawable.white);
 
 		float scaleX = size.width / mBackground1.getWidth();
 		float scaleY = size.height / mBackground1.getHeight();
 
 		{
-			//evening.setScale(scaleX, scaleY);
-			//addChild(evening);
+			mWhite.setScale(size.width, size.height);
+			addChild(mWhite);
+			mWhite.setPosition(size.width / 2, size.height / 2);
 		}
 		
 		// 添加背景精灵1
