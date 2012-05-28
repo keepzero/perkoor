@@ -30,8 +30,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	WYSize s; // 声明屏幕尺寸
 	float Y_sta = 0, Y_end = 0; // 初始与终止 y 轴 坐标 触摸点声明
 	float X_sta = 0, X_end = 0; // 初始与终止x 轴 坐标 触摸点声明
-	static float hight = 10; // 跳跃高度声明
-	static int Speed = 5;
+	static float hight = 12; // 跳跃高度声明
+	static int Speed = 10;
 	Roof1 roof_1;
 	Roof2 roof_2;
 	Roof3 roof_3;
@@ -42,7 +42,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 	public CharacterLayer() {
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
-		mWorld.setGravity(0, -10);// 设置世界的重力加速度
+		mWorld.setGravity(0, -15);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(s.width/3, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
@@ -69,6 +69,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 		{// picture
 			BodyDef bd = BodyDef.make();
+			bd.setFixedRotation(true);
 			bd.setPosition(0f, 10f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
@@ -78,7 +79,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			PolygonShape box1 = PolygonShape.make();
 			box1.setAsBox(0.5f, 0.5f);// 设置形状
 			FixtureDef fd = FixtureDef.make();
-			fd.setFriction(0.9f);
+			fd.setFriction(0f);
 			fd.setDensity(1f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
