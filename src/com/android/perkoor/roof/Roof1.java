@@ -12,29 +12,16 @@ import com.wiyun.engine.types.WYSize;
 
 public class Roof1 extends Roof{
 
-protected World mWorld;
-	
-	protected Box2D mBox2d;
-	
 	protected Sprite sprite;
 	
-	protected Body bodyroof_1;
-	WYSize s;
-	public Roof1(World world,Box2D box2d){
-		
-		mWorld = world;
-		mBox2d = box2d;
-		s = Director.getInstance().getWindowSize();
-		
-	}
+	protected Body bodyRoof;
 	
-	public void set_border (float x){
-		PELoader mLoader = PELoader.make(R.raw.shapedefs_roof);
-		mBox2d.setMeterPixels(mLoader.getMeterPixels());
-		bodyroof_1 = mLoader.createBodyByName(mBox2d, "roof_1");
-		bodyroof_1.setType(Body.TYPE_KINEMATIC);
-
-		bodyroof_1.setTransform(mBox2d.pixel2Meter(x), mBox2d.pixel2Meter(0f), 0);
+	public Roof1(World world,Box2D box2d, float x){
+		super(world, box2d);
+		
+		bodyRoof = mLoader.createBodyByName(mBox2d, "roof_1");
+		bodyRoof.setType(Body.TYPE_KINEMATIC);
+		bodyRoof.setTransform(mBox2d.pixel2Meter(x), mBox2d.pixel2Meter(0f), 0);
 
 		Sprite sprite = Sprite.make(R.drawable.roof_1);
 		sprite.autoRelease();
@@ -42,22 +29,7 @@ protected World mWorld;
 		WYPoint anchor = mLoader.getAnchorPercent("roof_1");
 		sprite.setAnchor(anchor.x,anchor.y);
 		sprite.setPosition(x, 0f);
-		bodyroof_1.setUserData(sprite);
+		bodyRoof.setUserData(sprite);
 		mBox2d.addChild(sprite);
 	}
-
-
-
-	
-/*	public float getImageX(){
-		return sprite.getTexture().getPixelWidth();
-	}
-	
-	public void updata_img( ){
-		
-		Sprite sprite = (Sprite) bodyroof_1.getUserData();
-			sprite.setPosition(mBox2d.meter2Pixel(bodyroof_1.getPosition().x),
-					mBox2d.meter2Pixel(bodyroof_1.getPosition().y));
-			System.out.println(sprite.getPositionX());
-		}*/
 }

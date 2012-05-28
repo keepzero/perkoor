@@ -144,12 +144,12 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	
 	public void setRoof(){
 		
-		Roof roof = RoofFactory.createRoof(1, mWorld, mBox2D);
-		roof.set_border(s.width/3);
+		Roof roof = RoofFactory.createRoof(1, mWorld, mBox2D, 0);
+		//roof.setLocation(s.width/3);
 		
 		for(int i = 0; i < 6; i++){
-			roof = RoofFactory.createRoof(1, mWorld, mBox2D);
-			roof.set_border(s.width * i);
+			roof = RoofFactory.createRoof(1, mWorld, mBox2D, s.width * i);
+			//roof.setLocation(s.width * i);
 		}
 		
 /*		roof_2 = new Roof2(mWorld, mBox2D);
