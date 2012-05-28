@@ -10,7 +10,7 @@ import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 
-public class Roof4 {
+public class Roof4 extends Roof{
 
 protected World mWorld;
 	

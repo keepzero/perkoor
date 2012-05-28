@@ -35,18 +35,14 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	static float hight = 5; // 跳跃高度声明
 	static float highter = 12;
 	static int Speed = 10;
-	Roof1 roof_1;
-	Roof2 roof_2;
-	Roof3 roof_3;
-	Roof4 roof_4;
-	Roof5 roof_5;
-	Roof6 roof_6;
-	Roof7 roof_7;
+	RoofFactory mRoofFactory;
 	
 	//box2d 的位置
 	int mLocation = 2500;
 
 	public CharacterLayer() {
+		
+		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
 		mWorld.setGravity(0, -15);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
@@ -54,25 +50,10 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
 		mBox2D.setBox2DRender(render);// mBox2D设置绑定
 		setTouchEnabled(true);// 设置是否触摸
+		mRoofFactory = new RoofFactory(mWorld, mBox2D);
 
-//		{// road
-//			BodyDef bd_road = BodyDef.make();// 刚体属性定义
-//			bd_road.setPosition(0, 0);// 位置
-//			Body b_road = mWorld.createBody(bd_road);// 创建刚体，赋予BodyDef属性
-//			bd_road.destroy();// 摧毁BodyDef，每次创建完必须摧毁
-//
-//			EdgeShape es = EdgeShape.make();// 形状声明
-//
-//			FixtureDef fixDef = FixtureDef.make();// 声明关联属性，可进行对刚体属性添加
-//			fixDef.setFriction(0.6f);
-//			fixDef.setShape(es);// FixtureDef设置形状属性
-//
-//			es.setEndpoints(-20f, -1f, mBox2D.pixel2Meter(s.width*2), -1f);// 位置，
-//			b_road.createFixture(fixDef);// 创建Fixture
-//			fixDef.destroy();
-//
-//		}
 
+		
 		{// picture
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
@@ -171,10 +152,10 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	
 	public void setRoof(){
 		
-		roof_1 = new Roof1(mWorld, mBox2D);
+		Roof roof_1 = (Roof1)mRoofFactory.createRoof(1);
 		roof_1.set_border(-s.width/3);
 		
-		roof_2 = new Roof2(mWorld, mBox2D);
+/*		roof_2 = new Roof2(mWorld, mBox2D);
 		roof_2.set_border(s.width/3);
 		
 		roof_3 = new Roof3(mWorld, mBox2D);
@@ -191,7 +172,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		Log.i("location", String.valueOf(s.width * 2f));
 		
 		roof_7 = new Roof7(mWorld, mBox2D);
-		roof_7.set_border(s.width*2.5f);	
+		roof_7.set_border(s.width*2.5f);*/	
 		Log.i("location", String.valueOf(s.width * 2.5f));
 
 	}

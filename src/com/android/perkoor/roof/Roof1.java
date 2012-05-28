@@ -10,7 +10,7 @@ import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 
-public class Roof1 {
+public class Roof1 extends Roof{
 
 protected World mWorld;
 	
@@ -45,8 +45,11 @@ protected World mWorld;
 		bodyroof_1.setUserData(sprite);
 		mBox2d.addChild(sprite);
 	}
+
+
+
 	
-	public float getImageX(){
+/*	public float getImageX(){
 		return sprite.getTexture().getPixelWidth();
 	}
 	
@@ -56,5 +59,5 @@ protected World mWorld;
 			sprite.setPosition(mBox2d.meter2Pixel(bodyroof_1.getPosition().x),
 					mBox2d.meter2Pixel(bodyroof_1.getPosition().y));
 			System.out.println(sprite.getPositionX());
-		}
+		}*/
 }

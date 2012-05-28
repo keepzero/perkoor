@@ -1,7 +1,6 @@
 package com.android.perkoor;
 
 import com.android.perkoor.layer.BGLayer;
-import com.android.perkoor.layer.BackgroudLayer;
 import com.android.perkoor.layer.CharacterLayer;
 import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Scene;
