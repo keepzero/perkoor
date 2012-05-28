@@ -6,3 +6,5 @@ project.properties
 /.settings
 *~
 .directory
+default.properties
+proguard.cfg

@@ -70,7 +70,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		{// picture
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
-			bd.setPosition(0f, 10f);
+			bd.setPosition(0f, 5f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
 			body.setLinearVelocity(WYPoint.make(Speed, 0f));
@@ -154,22 +154,22 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		roof_1.set_border(-s.width/3);
 		
 		roof_2 = new Roof2(mWorld, mBox2D);
-		roof_2.set_border(s.width/2);
+		roof_2.set_border(s.width/3);
 		
 		roof_3 = new Roof3(mWorld, mBox2D);
 		roof_3.set_border(s.width);
 		
 		roof_4 = new Roof4(mWorld, mBox2D);
-		roof_4.set_border(s.width*2);
+		roof_4.set_border(s.width*0.5f);
 		
 		roof_5 = new Roof5(mWorld, mBox2D);
-		roof_5.set_border(s.width*2.5f);
+		roof_5.set_border(s.width*1.5f);
 		
 		roof_6 = new Roof6(mWorld, mBox2D);
-		roof_6.set_border(s.width*3.5f);
+		roof_6.set_border(s.width*2f);
 		
 		roof_7 = new Roof7(mWorld, mBox2D);
-		roof_7.set_border(s.width*4);
+		roof_7.set_border(s.width);
 		
 		
 	}
