@@ -19,12 +19,21 @@ import com.wiyun.engine.utils.ResolutionIndependent;
 
 public class BGLayer extends Layer implements INodeVirtualMethods {
 
+	// 全局白色背景
 	Sprite mWhite;
 	
-	// 背景精灵
-	Sprite mBackground1;
-	Sprite mBackground2;
-	Sprite mBackground3;
+	// 浅背景，即远景
+	Sprite mLightBG1;
+	Sprite mLightBG2;
+	Sprite mLightBG3;
+	
+	// 深背景，即前景
+	Sprite mDarkBG1;
+	Sprite mDarkBG2;
+	Sprite mDarkBG3;
+	
+	int mDarkSpeed = 55;
+	int mLightSpeed = 88;
 
 	public BGLayer() {
 		setJavaVirtualMethods(this);
@@ -34,114 +43,172 @@ public class BGLayer extends Layer implements INodeVirtualMethods {
 		setNoDraw(true);
 		WYSize size = Director.getInstance().getWindowSize();
 
-		mBackground1 = Sprite.make(R.drawable.background1);
-		mBackground2 = Sprite.make(R.drawable.background2);
-		mBackground3 = Sprite.make(R.drawable.background1);	
-		
 		mWhite = Sprite.make(R.drawable.white);
+		
+		mDarkBG1 = Sprite.make(R.drawable.dark_bg_1);
+		mDarkBG2 = Sprite.make(R.drawable.dark_bg_2);
+		mDarkBG3 = Sprite.make(R.drawable.dark_bg_1);	
+		
+		mLightBG1 = Sprite.make(R.drawable.light_bg_1);
+		mLightBG2 = Sprite.make(R.drawable.light_bg_2);
+		mLightBG3 = Sprite.make(R.drawable.light_bg_1);
+		
+		// 背景缩放尺寸
+		float scaleX = size.width / mDarkBG1.getWidth();
+		float scaleY = size.height / mDarkBG1.getHeight();
 
-		float scaleX = size.width / mBackground1.getWidth();
-		float scaleY = size.height / mBackground1.getHeight();
-
+		// 全局白色背景
 		{
 			mWhite.setScale(size.width, size.height);
 			addChild(mWhite);
 			mWhite.setPosition(size.width / 2, size.height / 2);
 		}
 		
-		// 添加背景精灵1
+		// 远景1
 		{
-			mBackground1.setScale(scaleX, scaleY);
-			addChild(mBackground1);
+			mLightBG1.setScale(scaleX, scaleY);
+			addChild(mLightBG1);
+			mLightBG1.setPosition(size.width / 2, size.height / 2);
+
+			// MoveTo 动作
+			MoveTo move = (MoveTo) MoveTo.make(
+					mLightSpeed, // 第一个参数，动作持续时间
+					mLightBG1.getPositionX(), mLightBG1.getPositionY(), //起点
+					mLightBG1.getPositionX() - 2 * size.width, mLightBG1.getPositionY())//终点
+					.autoRelease(); 
+
+			MoveTo reMove = (MoveTo) MoveTo.make(
+					mLightSpeed,
+					mLightBG1.getPositionX(), mLightBG1.getPositionY(),
+					mLightBG1.getPositionX() - 2 * size.width, mLightBG1.getPositionY())
+					.autoRelease();
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mLightBG1.runAction(repeat);
+		}
+
+		// 远景2
+		{
+			mLightBG2.setScale(scaleX, scaleY);
+			addChild(mLightBG2);
+			mLightBG2.setPosition(size.width / 2 + 1 * size.width, size.height / 2);
+
+			MoveTo move = (MoveTo) MoveTo.make(
+					mLightSpeed, 
+					mLightBG2.getPositionX(),mLightBG2.getPositionY(),
+					mLightBG2.getPositionX() - 2 * size.width, mLightBG2.getPositionY())
+					.autoRelease();
+			
+			MoveTo reMove = (MoveTo) MoveTo.make(
+					mLightSpeed, 
+					mLightBG2.getPositionX(), mLightBG2.getPositionY(),
+					mLightBG2.getPositionX() - 2 * size.width, mLightBG2.getPositionY())
+					.autoRelease();
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mLightBG2.runAction(repeat);
+		}
+
+		// 远景3
+		{
+			mLightBG3.setScale(scaleX, scaleY);
+			addChild(mLightBG3);
+			Log.i("size", size.toString());
+			mLightBG3.setPosition(size.width / 2 + 2 * size.width, size.height / 2);
+
+			MoveTo move = (MoveTo) MoveTo.make(
+					mLightSpeed, 
+					mLightBG3.getPositionX(), mLightBG3.getPositionY(), 
+					mLightBG3.getPositionX() - 2 * size.width, mLightBG3.getPositionY())
+					.autoRelease();
+			
+			MoveTo reMove = (MoveTo) MoveTo.make(
+					mLightSpeed, 
+					mLightBG3.getPositionX(), mLightBG3.getPositionY(),
+					mLightBG3.getPositionX() - 2 * size.width, mLightBG3.getPositionY())
+					.autoRelease();
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mLightBG3.runAction(repeat);
+		}
+				
+		// 近景1
+		{
+			mDarkBG1.setScale(scaleX, scaleY);
+			addChild(mDarkBG1);
 			Log.i("wy_size", size.toString());
 			Log.i("wy_size", String.valueOf(size.width));
 			Log.i("wy_size", String.valueOf(size.height));
-			mBackground1.setPosition(size.width / 2, size.height / 2);
-			Log.i("bg_size", String.valueOf(mBackground1.getWidth()));
-			Log.i("bg_size", String.valueOf(mBackground1.getHeight()));
+			mDarkBG1.setPosition(size.width / 2, size.height / 2);
+			Log.i("bg_size", String.valueOf(mDarkBG1.getWidth()));
+			Log.i("bg_size", String.valueOf(mDarkBG1.getHeight()));
 
-			// MoveTo
+			// MoveTo 动作
 			MoveTo move = (MoveTo) MoveTo.make(
-					55, // 第一个参数，动作持续时间
-					mBackground1.getPositionX(), mBackground1.getPositionY(),
-					mBackground1.getPositionX() - 2 * size.width,
-					mBackground1.getPositionY()).autoRelease();
-			// move.setPinPoint(DP(100), size.height - DP(100));
-			// move.setPinAngleDelta(90);
+					mDarkSpeed, // 第一个参数，动作持续时间
+					mDarkBG1.getPositionX(), mDarkBG1.getPositionY(), //起点
+					mDarkBG1.getPositionX() - 2 * size.width, mDarkBG1.getPositionY())//终点
+					.autoRelease(); 
 
-			// MoveTo back = (MoveTo)move.reverse().autoRelease();
 			MoveTo reMove = (MoveTo) MoveTo.make(
-					55,
-					mBackground1.getPositionX(), mBackground1.getPositionY(),
-					mBackground1.getPositionX() - 2 * size.width,
-					mBackground1.getPositionY()).autoRelease();
-			Sequence seq = (Sequence) Sequence.make(move, reMove)
+					mDarkSpeed,
+					mDarkBG1.getPositionX(), mDarkBG1.getPositionY(),
+					mDarkBG1.getPositionX() - 2 * size.width, mDarkBG1.getPositionY())
 					.autoRelease();
-			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq)
-					.autoRelease();
-			mBackground1.runAction(repeat);
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mDarkBG1.runAction(repeat);
 		}
 
-		// 背景精灵2
+		// 近景2
 		{
-			mBackground2.setScale(scaleX, scaleY);
-			addChild(mBackground2);
-			Log.i("size", size.toString());
-			mBackground2.setPosition(size.width / 2 + 1 * size.width,
-					size.height / 2);
+			mDarkBG2.setScale(scaleX, scaleY);
+			addChild(mDarkBG2);
+			mDarkBG2.setPosition(size.width / 2 + 1 * size.width, size.height / 2);
 
-			// MoveTo
 			MoveTo move = (MoveTo) MoveTo.make(
-					55, 
-					mBackground2.getPositionX(),
-					mBackground2.getPositionY(),
-					mBackground2.getPositionX() - 2 * size.width,
-					mBackground2.getPositionY()).autoRelease();
-			// move.setPinPoint(DP(100), size.height - DP(100));
-			// move.setPinAngleDelta(90);
-
-			// MoveTo back = (MoveTo)move.reverse().autoRelease();
+					mDarkSpeed, 
+					mDarkBG2.getPositionX(),mDarkBG2.getPositionY(),
+					mDarkBG2.getPositionX() - 2 * size.width, mDarkBG2.getPositionY())
+					.autoRelease();
+			
 			MoveTo reMove = (MoveTo) MoveTo.make(
-					55, // 第一个参数，动作持续时间
-					mBackground2.getPositionX(), mBackground2.getPositionY(),
-					mBackground2.getPositionX() - 2 * size.width,
-					mBackground2.getPositionY()).autoRelease();
-			Sequence seq = (Sequence) Sequence.make(move, reMove)
+					mDarkSpeed, 
+					mDarkBG2.getPositionX(), mDarkBG2.getPositionY(),
+					mDarkBG2.getPositionX() - 2 * size.width, mDarkBG2.getPositionY())
 					.autoRelease();
-			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq)
-					.autoRelease();
-			mBackground2.runAction(repeat);
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mDarkBG2.runAction(repeat);
 		}
 
-		// 背景精灵3
+		// 近景3
 		{
-			mBackground3.setScale(scaleX, scaleY);
-			addChild(mBackground3);
+			mDarkBG3.setScale(scaleX, scaleY);
+			addChild(mDarkBG3);
 			Log.i("size", size.toString());
-			mBackground3.setPosition(size.width / 2 + 2 * size.width,
-					size.height / 2);
+			mDarkBG3.setPosition(size.width / 2 + 2 * size.width, size.height / 2);
 
-			// MoveTo
 			MoveTo move = (MoveTo) MoveTo.make(
-					55, 
-					mBackground3.getPositionX(),
-					mBackground3.getPositionY(),
-					mBackground3.getPositionX() - 2 * size.width,
-					mBackground3.getPositionY()).autoRelease();
-			// move.setPinPoint(DP(100), size.height - DP(100));
-			// move.setPinAngleDelta(90);
-
-			// MoveTo back = (MoveTo)move.reverse().autoRelease();
+					mDarkSpeed, 
+					mDarkBG3.getPositionX(), mDarkBG3.getPositionY(), 
+					mDarkBG3.getPositionX() - 2 * size.width, mDarkBG3.getPositionY())
+					.autoRelease();
+			
 			MoveTo reMove = (MoveTo) MoveTo.make(
-					55, // 第一个参数，动作持续时间
-					mBackground3.getPositionX(), mBackground3.getPositionY(),
-					mBackground3.getPositionX() - 2 * size.width,
-					mBackground3.getPositionY()).autoRelease();
-			Sequence seq = (Sequence) Sequence.make(move, reMove)
+					mDarkSpeed, 
+					mDarkBG3.getPositionX(), mDarkBG3.getPositionY(),
+					mDarkBG3.getPositionX() - 2 * size.width, mDarkBG3.getPositionY())
 					.autoRelease();
-			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq)
-					.autoRelease();
-			mBackground3.runAction(repeat);
+			
+			Sequence seq = (Sequence) Sequence.make(move, reMove).autoRelease();
+			RepeatForever repeat = (RepeatForever) RepeatForever.make(seq).autoRelease();
+			mDarkBG3.runAction(repeat);
 		}
 	}
 
@@ -159,8 +226,8 @@ public class BGLayer extends Layer implements INodeVirtualMethods {
 		Primitives.drawPoint(DP(100), s.height - DP(100));
 
 		// draw anchor point
-		WYPoint anchor = mBackground1.convertToWorldSpace(
-				mBackground1.getAnchorX(), mBackground1.getAnchorY());
+		WYPoint anchor = mDarkBG1.convertToWorldSpace(
+				mDarkBG1.getAnchorX(), mDarkBG1.getAnchorY());
 		Primitives.drawPoint(anchor.x, anchor.y);
 
 		// draw line between pin point and anchor point
