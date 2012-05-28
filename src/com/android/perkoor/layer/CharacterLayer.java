@@ -1,5 +1,6 @@
 package com.android.perkoor.layer;
 
+import android.R.integer;
 import android.util.Log;
 import android.view.MotionEvent; 
 
@@ -20,11 +21,6 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class CharacterLayer extends Box2DLayer implements IContactListener {
 
-	/*
-	 * # Android 命名规范 - 非公有，非静态字段以 m 开头 - 静态域命名以 s 开头 - 其他字段以小写字母开头 - public
-	 * static final 字段（常量）全部大写，并用下划线连起来
-	 */
-
 	Body bodyroof;
 	Body body; // 申明人物刚体
 	Fixture f; // 声明刚体附加属性
@@ -34,8 +30,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float tital_x = 0, tital_y = 0; //手指滑动距离
 	static float hight = 5; // 跳跃高度声明
 	static float highter = 12;
-	static int Speed = 10;
-	RoofFactory mRoofFactory;
+	static int Speed = 10; 
 	
 	//box2d 的位置
 	int mLocation = 2500;
@@ -49,10 +44,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
 		mBox2D.setBox2DRender(render);// mBox2D设置绑定
-		setTouchEnabled(true);// 设置是否触摸
-		mRoofFactory = new RoofFactory(mWorld, mBox2D);
-
-
+		setTouchEnabled(true);// 设置是否触摸 
 		
 		{// picture
 			BodyDef bd = BodyDef.make();
@@ -152,8 +144,13 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	
 	public void setRoof(){
 		
-		Roof roof_1 = (Roof1)mRoofFactory.createRoof(1);
-		roof_1.set_border(-s.width/3);
+		Roof roof = RoofFactory.createRoof(1, mWorld, mBox2D);
+		roof.set_border(s.width/3);
+		
+		for(int i = 0; i < 6; i++){
+			roof = RoofFactory.createRoof(1, mWorld, mBox2D);
+			roof.set_border(s.width * i);
+		}
 		
 /*		roof_2 = new Roof2(mWorld, mBox2D);
 		roof_2.set_border(s.width/3);
