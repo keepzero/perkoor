@@ -30,7 +30,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float tital_x = 0, tital_y = 0; //手指滑动距离
 	static float hight = 5; // 跳跃高度声明
 	static float highter = 12;
-	static int Speed = 12; 
+	static float SPEED = 15; 
 	
 	//box2d 的位置
 	int mLocation = 2500;
@@ -38,7 +38,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	public CharacterLayer() {
 		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
-		mWorld.setGravity(0, -20);// 设置世界的重力加速度
+		mWorld.setGravity(0, -30);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
@@ -49,17 +49,17 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
 			//bd.setAngle(10);
-			bd.setPosition(0f, 10f);
+			bd.setPosition(0f, 5f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
-			body.setLinearVelocity(WYPoint.make(Speed, 0f));
+			body.setLinearVelocity(WYPoint.make(SPEED, 0f));
 			bd.destroy();
 
 			PolygonShape box1 = PolygonShape.make();
 			box1.setAsBox(0.6f, 0.6f);// 设置形状
 			FixtureDef fd = FixtureDef.make();
-			fd.setFriction(0f);
-			fd.setDensity(1f);
+			fd.setFriction(1f);
+			fd.setDensity(0f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
 			fd.destroy();
@@ -81,6 +81,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		fresh();
 		WYPoint carPos = body.getPosition();
 		float pX = mBox2D.meter2Pixel(carPos.x);
+		Log.i(" getFriction", body.getFirstFixture().getFriction()+"");
 		
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width/3 ,0);
@@ -135,10 +136,10 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		
 		WYPoint WH;
 		if(tital_y > 250){
-			WH = WYPoint.make(Speed, highter);
+			WH = WYPoint.make(SPEED, highter);
 			body.setLinearVelocity(WH); // 设置速度
 		}else if (tital_y > 100) {
-			WH = WYPoint.make(Speed, hight);
+			WH = WYPoint.make(SPEED, hight);
 			body.setLinearVelocity(WH); // 设置速度
 		}
 	}
