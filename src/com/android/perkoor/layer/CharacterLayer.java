@@ -1,13 +1,13 @@
 package com.android.perkoor.layer;
 
-import android.view.MotionEvent;
+import android.R.integer;
+import android.util.Log;
+import android.view.MotionEvent; 
 
 import com.android.perkoor.R;
-import com.wiyun.engine.box2d.Box2D;
+import com.android.perkoor.roof.*;
 import com.wiyun.engine.box2d.Box2DRender;
 import com.wiyun.engine.box2d.FixtureAnimation;
-import com.wiyun.engine.box2d.PELoader;
-import com.wiyun.engine.box2d.collision.EdgeShape;
 import com.wiyun.engine.box2d.collision.PolygonShape;
 import com.wiyun.engine.box2d.dynamics.Body;
 import com.wiyun.engine.box2d.dynamics.BodyDef;
@@ -15,17 +15,11 @@ import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.box2d.dynamics.World.IContactListener;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class CharacterLayer extends Box2DLayer implements IContactListener {
-
-	/*
-	 * # Android 命名规范 - 非公有，非静态字段以 m 开头 - 静态域命名以 s 开头 - 其他字段以小写字母开头 - public
-	 * static final 字段（常量）全部大写，并用下划线连起来
-	 */
 
 	Body bodyroof;
 	Body body; // 申明人物刚体
@@ -33,46 +27,39 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	WYSize s; // 声明屏幕尺寸
 	float Y_sta = 0, Y_end = 0; // 初始与终止 y 轴 坐标 触摸点声明
 	float X_sta = 0, X_end = 0; // 初始与终止x 轴 坐标 触摸点声明
-	static float hight = 10; // 跳跃高度声明
-	static int Speed = -5;
+	float tital_x = 0, tital_y = 0; //手指滑动距离
+	static float hight = 5; // 跳跃高度声明
+	static float highter = 10;
+	static int Speed = 20; 
+	
+	//box2d 的位置
+	float mLocation;
 
 	public CharacterLayer() {
+		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
-		mWorld.setGravity(0, -10);// 设置世界的重力加速度
+		mLocation = s.width;
+		
+		mWorld.setGravity(0, -20);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
 		mBox2D.setBox2DRender(render);// mBox2D设置绑定
-		setTouchEnabled(true);// 设置是否触摸
-
-		{// road
-			BodyDef bd_road = BodyDef.make();// 刚体属性定义
-			bd_road.setPosition(0, 0);// 位置
-			Body b_road = mWorld.createBody(bd_road);// 创建刚体，赋予BodyDef属性
-			bd_road.destroy();// 摧毁BodyDef，每次创建完必须摧毁
-
-			EdgeShape es = EdgeShape.make();// 形状声明
-
-			FixtureDef fixDef = FixtureDef.make();// 声明关联属性，可进行对刚体属性添加
-			fixDef.setShape(es);// FixtureDef设置形状属性
-
-			es.setEndpoints(-20f, 1.5f, mBox2D.pixel2Meter(s.width), 1.5f);// 位置，
-			b_road.createFixture(fixDef);// 创建Fixture
-			fixDef.destroy();
-
-		}
-
+		setTouchEnabled(true);// 设置是否触摸 
+		
 		{// picture
 			BodyDef bd = BodyDef.make();
-			bd.setPosition(mBox2D.pixel2Meter(200f), 10f);
+			bd.setFixedRotation(true);
+			bd.setPosition(0f, 10f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
+			body.setLinearVelocity(WYPoint.make(Speed, 0f));
 			bd.destroy();
 
 			PolygonShape box1 = PolygonShape.make();
-			box1.setAsBox(0.5f, 0.5f);// 设置形状
+			box1.setAsBox(0.6f, 0.6f);// 设置形状
 			FixtureDef fd = FixtureDef.make();
-			//fd.setFriction(10f);
+			fd.setFriction(0f);
 			fd.setDensity(1f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
@@ -83,48 +70,32 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			anim.setLoop(true);// 设置是否循环显示
 			anim.start(f);// 启动动画显示
 
-			// Texture2D text = Texture2D.makePNG(R.drawable.icon);
-			// render.bindTexture(f, text);
 		}
 
-		{
-
-			PELoader mLoader = PELoader.make(R.raw.shapedefs_roof7);
-			mBox2D.setMeterPixels(mLoader.getMeterPixels());
-			bodyroof = mLoader.createBodyByName(mBox2D, "roof_7");
-
-			bodyroof.setTransform(mBox2D.pixel2Meter(s.width/2), mBox2D.pixel2Meter(100f), 0);
-
-			Sprite sprite = Sprite.make(R.drawable.roof_7);
-			sprite.autoRelease();
-			
-			WYPoint anchor = mLoader.getAnchorPercent("roof_7");
-			sprite.setAnchor(anchor.x,anchor.y);
-			sprite.setPosition(s.width/2, 100f);
-			bodyroof.setUserData(sprite);
-			bodyroof.setLinearVelocity(WYPoint.make(-2f, 0f));
-			mBox2D.addChild(sprite);
-		}
+		setRoof();
 
 		schedule(new TargetSelector(this, "update(float)", new Object[] { 0f }));
 	}
 
 	public void update(float delta) {
 		super.update(delta);
-		Sprite sprite = (Sprite) bodyroof.getUserData();
-		sprite.setPosition(mBox2D.meter2Pixel(bodyroof.getPosition().x),
-				mBox2D.meter2Pixel(bodyroof.getPosition().y));
-		// move the scene, keep the car center
-		// WYSize s1 = Director.getInstance().getWindowSize();
-
-		// float pX = mBox2D.meter2Pixel(carPos.x);
-		// mBox2D.setPosition(pX + s1.width / 2,
-		// ResolutionIndependent.resolveDp(100));
-
-		// f.getBody().setLinearVelocity( WYPoint.make(1f,0));
-		// f_road.getBody().setTransform(i, 10f, 0f);
-		// i++;
-		// mBox2D.setPosition(-pX + s1.width / 2, 0);
+		fresh();
+		WYPoint carPos = body.getPosition();
+		float pX = mBox2D.meter2Pixel(carPos.x);
+		
+		// 设置 Box2D 世界跟随人物
+		mBox2D.setPosition(-pX + s.width/3 ,0);
+		
+		// 屋顶生成
+		if(pX > mLocation){
+			mLocation += s.width;
+			RoofFactory.createRoof(Roof.getRandom(7), mWorld, mBox2D, mLocation);
+	    }
+		
+		//TODO 循环屋顶
+		//线程
+		//判断box2d 位置
+		//更新屋顶
 	}
 
 	@Override
@@ -144,29 +115,56 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 				event.getY());
 		X_end = loc.x;
 		Y_end = loc.y;
-		float tital_x = 0, tital_y = 0;
+		
+		//移到外面，成为类字段
+		//float tital_x = 0, tital_y = 0; 
 		tital_y = Y_end - Y_sta; // y轴距离差
 		tital_x = X_end - X_sta; // x轴距离差
 
-		if (tital_x > 0 && tital_y > 0) { // 判断是否起跳
+		if (tital_x > 10 && tital_y > 10) { // 判断是否起跳
 			System.out.println("jump");
 			jump();
 		}
+		
 		if (tital_x > 0 && tital_y < 0) { // 判断下蹲
 			squat();
 		}
+		
 		return true;
 	}
 
 	public void jump() { // 起跳
-		if (body.getLinearVelocity().y == 0) { // 防止连跳，判断y的速度是否为0
-			WYPoint WH = WYPoint.make(0f, hight);
+		
+		WYPoint WH;
+		if (tital_y > 100) {
+			WH = WYPoint.make(Speed, highter);
 			body.setLinearVelocity(WH); // 设置速度
 		}
+	}
+	
+	public void setRoof(){
+		
+		RoofFactory.createRoof(1, mWorld, mBox2D, 0);
+		RoofFactory.createRoof(1, mWorld, mBox2D, s.width);
+		//roof.setLocation(s.width/3);
+		
+		/*for(int i = 1; i <= 7; i++){
+			RoofFactory.createRoof(Roof.getRandom(7), mWorld, mBox2D, s.width * i);
+			System.out.println(s.width * i);
+			//roof.setLocation(s.width * i);
+			
+			Log.i("location", String.valueOf(s.width * i));
+		}*/
+		
+		//Log.i("location", String.valueOf(s.width * 2.5f));
 
-		// body.setLinearVelocity(WYPoint.make(0, 0));
 	}
 
+	
+	public void fresh(){
+
+	}
+	
 	public void squat() { // 下蹲
 
 	}
@@ -192,6 +190,6 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	@Override
 	public void preSolve(int arg0, int arg1) {
 		// TODO Auto-generated method stub
-
+	
 	}
 }
