@@ -31,14 +31,18 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	static float hight = 5; // 跳跃高度声明
 	static float highter = 12;
 	static float SPEED = 15; 
+
+	static int Speed = 20; 
 	
 	//box2d 的位置
-	int mLocation = 2500;
+	float mLocation;
 
 	public CharacterLayer() {
 		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
-		mWorld.setGravity(0, -30);// 设置世界的重力加速度
+		mLocation = s.width;
+		
+		mWorld.setGravity(0, -20);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
@@ -86,12 +90,11 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width/3 ,0);
 		
-		/*mLocation += 500;
+		// 屋顶生成
 		if(pX > mLocation){
-			Log.i("pX", String.valueOf(pX));
-			Roof1 roof = new Roof1(mWorld, mBox2D);
-			roof.set_border(pX);
-		}*/
+			mLocation += s.width;
+			RoofFactory.createRoof(Roof.getRandom(7), mWorld, mBox2D, mLocation);
+	    }
 		
 		//TODO 循环屋顶
 		//线程
@@ -122,13 +125,15 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		tital_y = Y_end - Y_sta; // y轴距离差
 		tital_x = X_end - X_sta; // x轴距离差
 
-		if (tital_x > 2 && tital_y > 2) { // 判断是否起跳
+		if (tital_x > 10 && tital_y > 10) { // 判断是否起跳
 			System.out.println("jump");
 			jump();
 		}
+		
 		if (tital_x > 0 && tital_y < 0) { // 判断下蹲
 			squat();
 		}
+		
 		return true;
 	}
 
@@ -147,15 +152,16 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	public void setRoof(){
 		
 		RoofFactory.createRoof(1, mWorld, mBox2D, 0);
+		RoofFactory.createRoof(1, mWorld, mBox2D, s.width);
 		//roof.setLocation(s.width/3);
 		
-		for(int i = 1; i <= 7; i++){
+		/*for(int i = 1; i <= 7; i++){
 			RoofFactory.createRoof(Roof.getRandom(7), mWorld, mBox2D, s.width * i);
 			System.out.println(s.width * i);
 			//roof.setLocation(s.width * i);
 			
 			Log.i("location", String.valueOf(s.width * i));
-		}
+		}*/
 		
 		//Log.i("location", String.valueOf(s.width * 2.5f));
 
