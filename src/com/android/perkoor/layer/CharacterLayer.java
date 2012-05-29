@@ -29,7 +29,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float X_sta = 0, X_end = 0; // 初始与终止x 轴 坐标 触摸点声明
 	float tital_x = 0, tital_y = 0; //手指滑动距离
 	static float hight = 5; // 跳跃高度声明
-	static float highter = 10;
+	static float highter = 12;
+	static float SPEED = 15; 
+
 	static int Speed = 20; 
 	
 	//box2d 的位置
@@ -50,22 +52,23 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		{// picture
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
-			bd.setPosition(0f, 10f);
+			//bd.setAngle(10);
+			bd.setPosition(0f, 5f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
-			body.setLinearVelocity(WYPoint.make(Speed, 0f));
+			body.setLinearVelocity(WYPoint.make(SPEED, 0f));
 			bd.destroy();
 
 			PolygonShape box1 = PolygonShape.make();
 			box1.setAsBox(0.6f, 0.6f);// 设置形状
 			FixtureDef fd = FixtureDef.make();
-			fd.setFriction(0f);
-			fd.setDensity(1f);
+			fd.setFriction(1f);
+			fd.setDensity(0f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
 			fd.destroy();
 			FixtureAnimation anim = FixtureAnimation.make(0.2f,
-					R.drawable.moving1, R.drawable.moving2, R.drawable.moving3);// 动画帧等版定和设置
+					R.drawable.fan_run1, R.drawable.fan_run2, R.drawable.fan_run3, R.drawable.fan_run4);// 动画帧等版定和设置
 
 			anim.setLoop(true);// 设置是否循环显示
 			anim.start(f);// 启动动画显示
@@ -82,6 +85,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		fresh();
 		WYPoint carPos = body.getPosition();
 		float pX = mBox2D.meter2Pixel(carPos.x);
+		Log.i(" getFriction", body.getFirstFixture().getFriction()+"");
 		
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width/3 ,0);
@@ -136,8 +140,11 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	public void jump() { // 起跳
 		
 		WYPoint WH;
-		if (tital_y > 100) {
-			WH = WYPoint.make(Speed, highter);
+		if(tital_y > 250){
+			WH = WYPoint.make(SPEED, highter);
+			body.setLinearVelocity(WH); // 设置速度
+		}else if (tital_y > 100) {
+			WH = WYPoint.make(SPEED, hight);
 			body.setLinearVelocity(WH); // 设置速度
 		}
 	}
