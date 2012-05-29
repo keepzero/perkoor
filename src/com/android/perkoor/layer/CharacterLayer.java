@@ -48,6 +48,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		{// picture
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
+			//bd.setAngle(10);
 			bd.setPosition(0f, 10f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
@@ -63,7 +64,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			f = body.createFixture(fd);
 			fd.destroy();
 			FixtureAnimation anim = FixtureAnimation.make(0.2f,
-					R.drawable.moving1, R.drawable.moving2, R.drawable.moving3);// 动画帧等版定和设置
+					R.drawable.fan_run1, R.drawable.fan_run2, R.drawable.fan_run3, R.drawable.fan_run4);// 动画帧等版定和设置
 
 			anim.setLoop(true);// 设置是否循环显示
 			anim.start(f);// 启动动画显示
