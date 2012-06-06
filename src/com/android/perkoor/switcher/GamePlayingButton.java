@@ -39,9 +39,7 @@ public class GamePlayingButton extends Layer implements INodeVirtualMethods {
 	}
 	
 	public void onPauseButtonClicked() {
-		addChild(new GamePause());
-		addChild(new GamePauseButton());		
-		
+		addChild(new GamePause());				
 	}
 	
 	@Override
