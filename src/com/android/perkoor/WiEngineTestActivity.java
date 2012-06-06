@@ -29,7 +29,7 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
 	}
 	
     protected WYGLSurfaceView mGLSurfaceView;
-    protected Scene mScene;
+    public Scene mScene;
     
 	// true表示这个demo已经被启动了
 	private boolean mStarted;
@@ -173,4 +173,5 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
     
     public void onSurfaceDestroyed() {
     }
+
 }

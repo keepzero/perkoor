@@ -16,7 +16,10 @@ import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
-public class GamePause extends Layer implements INodeVirtualMethods {
+public class GamePause extends Layer {
+	Scene mScene;
+	Scene perkoorScene;
+	
 	Sprite mPauseBackground;
 	Sprite mAlphaBackground;
 	
@@ -25,12 +28,17 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 	Button homeButton;
 	
 	public GamePause() {
-		WYSize size = Director.getInstance().getWindowSize();			
+		WYSize size = Director.getInstance().getWindowSize();
+		float scaleX = size.width / 1280;
+		float scaleY = size.height / 720;
 		
 		mPauseBackground = Sprite.make(R.drawable.pause_background);		
 		if(size.width < 800 || size.height < 480)
 		{
 			mPauseBackground.setScale(size.width / 800, size.height / 480);
+		}
+		if(size.width == 800 || size.height == 480) {
+			mPauseBackground.setScale(scaleX, scaleY);
 		}
 		else {
 			mPauseBackground.setScale(640 / size.width, 384 / size.height);
@@ -41,7 +49,7 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 		
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
-		//mAlphaBackground.setScale(size.width, size.height);
+		mAlphaBackground.setScale(size.width, size.height);
 		Texture2D restart_normal = Texture2D.makePNG(R.drawable.restart_normal);
 		Texture2D restart_selected = Texture2D.makePNG(R.drawable.restart_selected);
 		
@@ -80,55 +88,6 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 		addChild(restartButton);
 		addChild(resumeButton);
 		addChild(homeButton);
-		
-	}
-
-	public void onRestartButtonClicked() {
-		Scene perkoorScene;
-		perkoorScene = Scene.make();
-		perkoorScene.addChild(new BGLayer());
-		perkoorScene.addChild(new CloudLayer());
-		perkoorScene.addChild(new CharacterLayer());
-		perkoorScene.addChild(new GamePlayingButton());
-		perkoorScene.autoRelease(true);
-		Director.getInstance().pushScene(perkoorScene); 
-	}
-	
-	//恢复游戏
-	public void onResumeButtonClicked() {		
-		
-	}
-	
-	//返回主界面
-	public void onHomeButtonClicked() {
-		Scene homeScene = Scene.make();
-		homeScene = Scene.make();
-		homeScene.addChild(new GameHomepage());
-		homeScene.addChild(new GameHomeButton());
-		Director.getInstance().pushScene(homeScene);
-	}
-	
-	@Override
-	public void jDraw() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void jOnEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void jOnEnterTransitionDidFinish() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void jOnExit() {
-		// TODO Auto-generated method stub
 		
 	}
 }
