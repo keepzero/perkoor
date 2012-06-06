@@ -19,7 +19,7 @@ public class Roof5 extends Roof{
 
 		bodyRoof = mLoader.createBodyByName(mBox2d, "roof_5");
 		bodyRoof.setType(Body.TYPE_KINEMATIC);
-		bodyRoof.getFirstFixture().setFriction(0.2f);
+		bodyRoof.getFirstFixture().setFriction(0.01f);
 		bodyRoof.getFirstFixture().setDensity(0f);
 		bodyRoof.setTransform(mBox2d.pixel2Meter(x), mBox2d.pixel2Meter(0f), 0);
 
