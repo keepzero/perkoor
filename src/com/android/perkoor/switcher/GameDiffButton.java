@@ -104,7 +104,7 @@ public class GameDiffButton extends Layer implements INodeVirtualMethods {
 		Scene backHomeScene = Scene.make();
 		backHomeScene.addChild(new GameHomepage());
 		backHomeScene.addChild(new GameHomeButton());
-		Director.getInstance().pushScene(LeftPushInTransition.make(1, backHomeScene));
+		Director.getInstance().pushScene(LeftPushInTransition.make((float) 0.5, backHomeScene));
 	}
 	
 	

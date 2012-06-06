@@ -10,6 +10,7 @@ import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.transitions.RightPushInTransition;
+import com.wiyun.engine.transitions.RightSlideInTransition;
 
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
@@ -128,8 +129,8 @@ public class GameHomeButton extends Layer implements INodeVirtualMethods {
 	public void onPlayButtonClicked() {
 		Scene playScene = Scene.make();
 		playScene.addChild(new GameDifficulty());
-		playScene.addChild(new GameDiffButton());
-		Director.getInstance().pushScene(RightPushInTransition.make(1, playScene));
+		playScene.addChild(new GameDiffButton());		
+		Director.getInstance().pushScene(RightSlideInTransition.make((float) 0.5, playScene));
 	}
 	
 	public void onMusicClicked() {
