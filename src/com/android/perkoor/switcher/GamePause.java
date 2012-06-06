@@ -28,14 +28,12 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 		WYSize size = Director.getInstance().getWindowSize();
 		
 		float scaleX = size.width / 10;
-		float scaleY = size.height / 10;
-		
-		float zoomX = size.width / 1280;
-		float zoomY = size.height / 720;
+		float scaleY = size.height / 10;				
 		
 		mPauseBackground = Sprite.make(R.drawable.pause_background);
-		mPauseBackground.setScale(zoomX, zoomY);
 		mPauseBackground.setPosition(size.width / 2, size.height / 2);
+		float zoomX = mPauseBackground.getWidth() / 10;
+		float zoomY = mPauseBackground.getHeight() / 10;
 		
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
@@ -55,7 +53,7 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
 		restartButton = Button.make(restartNormal, restartSelected, null, null,
 				new TargetSelector(this, "onRestartButtonClicked", null));
-		restartButton.setPosition((size.width / 2) - (scaleX * 2), (size.height / 2) - (scaleY * 2));
+		restartButton.setPosition((size.width / 2) - (zoomX * 2), (size.height / 2) - (zoomY * 2));
 		
 		Sprite resumeNormal = Sprite.make(continue_normal,
 				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
@@ -63,7 +61,7 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
 		resumeButton = Button.make(resumeNormal, resumeSelected, null, null,
 				new TargetSelector(this, "onResumeButtonClicked", null));
-		resumeButton.setPosition((size.width / 2), (size.height / 2) - (scaleY * 2));
+		resumeButton.setPosition((size.width / 2), (size.height / 2) - (zoomY * 2));
 		
 		Sprite homeNormal = Sprite.make(home_normal,
 				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
@@ -71,7 +69,7 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
 		homeButton = Button.make(homeNormal, homeSelected, null, null,
 				new TargetSelector(this, "onHomeButtonClicked", null));
-		homeButton.setPosition((size.width / 2) + (scaleX * 2), (size.height / 2) - (scaleY * 2));		
+		homeButton.setPosition((size.width / 2) + (zoomX * 2), (size.height / 2) - (zoomY * 2));		
 		
 		addChild(mAlphaBackground);
 		addChild(mPauseBackground);
