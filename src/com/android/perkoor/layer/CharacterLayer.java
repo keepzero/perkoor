@@ -42,7 +42,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
 		mLocation = s.width;
 		
-		mWorld.setGravity(0, -20);// 设置世界的重力加速度
+		mWorld.setGravity(0, -30);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
 		Box2DRender render = Box2DRender.make();// 获取绑定render，用于贴图与刚体的绑定
@@ -52,8 +52,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		{// picture
 			BodyDef bd = BodyDef.make();
 			bd.setFixedRotation(true);
-			//bd.setAngle(10);
-			bd.setPosition(0f, 5f);
+			//bd.setAngle(2);
+			bd.setPosition(0f,10f);
 			bd.setType(Body.TYPE_DYNAMIC);// 刚体类型，必须设置类型才能有相应的质量等
 			body = mWorld.createBody(bd);
 			body.setLinearVelocity(WYPoint.make(SPEED, 0f));
@@ -62,8 +62,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			PolygonShape box1 = PolygonShape.make();
 			box1.setAsBox(0.6f, 0.6f);// 设置形状
 			FixtureDef fd = FixtureDef.make();
-			fd.setFriction(1f);
-			fd.setDensity(0f);
+			fd.setFriction(0.5f);
+			fd.setDensity(1.0f);
 			fd.setShape(box1);
 			f = body.createFixture(fd);
 			fd.destroy();
@@ -85,7 +85,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		fresh();
 		WYPoint carPos = body.getPosition();
 		float pX = mBox2D.meter2Pixel(carPos.x);
-		Log.i(" getFriction", body.getFirstFixture().getFriction()+"");
+		//System.out.println(body.getFirstFixture().getFriction()+"");
 		
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width/3 ,0);
@@ -167,6 +167,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 	}
 
+	public void changeFatty(){
+		
+	}
 	
 	public void fresh(){
 
