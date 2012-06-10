@@ -5,31 +5,36 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 
+import com.android.perkoor.switcher.GameHomepage;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Director.IDirectorLifecycleListener;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.opengl.WYGLSurfaceView;
 
-public abstract class WiEngineTestActivity extends Activity implements IDirectorLifecycleListener {
+public class PerkoorActivity extends Activity implements IDirectorLifecycleListener {
+	protected WYGLSurfaceView mGLSurfaceView;
+	static PerkoorActivity gameview;  
+    static int fenshu, score;
+    GameHomepage gameHomepage;
 	static {
 		System.loadLibrary("wiskia");
 		System.loadLibrary("xml2");
 		System.loadLibrary("wiengine");
 		System.loadLibrary("wiengine_binding");
-		//System.loadLibrary("lua");
-		//System.loadLibrary("chipmunk");
+		System.loadLibrary("lua");
+		System.loadLibrary("chipmunk");
 		System.loadLibrary("box2d");
 		System.loadLibrary("wisound");
 	}
-	
-    protected WYGLSurfaceView mGLSurfaceView;
-    protected Scene mScene;
+	MediaPlayer mMediaPlayer, mMediaPlayer2; 
+    
     
 	// true表示这个demo已经被启动了
 	private boolean mStarted;
@@ -62,6 +67,7 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
         // 添加一个生命周期监听器，如果不需要可以不添加
         Director.getInstance().addLifecycleListener(this);
         
+        mMediaPlayer = new MediaPlayer();
         /*
          * 取消下面两行代码的注释可以打开基础大小适配模式。关于适配模式的介绍请
          * 查看"WiEngine 3.x综述"中的"屏幕适配"一节。
@@ -69,16 +75,29 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
 //        Director.getInstance().setScaleMode(Director.SCALE_MODE_BASE_SIZE_FIT_XY);
 //        Director.getInstance().setBaseSize(320, 480);
 	}
-	
+	public void play1() {  
+        
+        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.jump);  
+        mMediaPlayer.setLooping(false);  
+        mMediaPlayer.start();*/
+    }  
+    public void play2() {  
+        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.boost);  
+        mMediaPlayer.setLooping(false);  
+        mMediaPlayer.start();*/  
+    }  
+    public void play3() {  
+        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.jump2);  
+        mMediaPlayer.setLooping(false);  
+        mMediaPlayer.start();*/  
+    }
+    
 	protected void createScene() {
-		mScene = Scene.make();
-		mScene.addChild(createLayer());
-		mScene.autoRelease(true);
+		gameHomepage = new GameHomepage();
+		gameHomepage.autoRelease(true);
+		Director.getInstance().runWithScene(gameHomepage);
 	}
-	
-	protected Layer createLayer() {
-		return null;
-	}
+
 	
 	protected boolean isTransparent() {
 		return false;
@@ -150,7 +169,7 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
     	if(!mStarted) {
     		mStarted = true;
     		createScene();
-    		Director.getInstance().runWithScene(mScene);
+    		Director.getInstance().runWithScene(gameHomepage);
     	}
     }
     
@@ -159,7 +178,7 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
     	if(!TextUtils.isEmpty(error)) {
     		runOnUiThread(new Runnable() {
 	            public void run() {
-	            	AlertDialog.Builder builder = new Builder(WiEngineTestActivity.this);
+	            	AlertDialog.Builder builder = new Builder(PerkoorActivity.this);
 	            	builder.setMessage(error)
 	            	.setNegativeButton("OK", new OnClickListener() {
 	            		public void onClick(DialogInterface dialog, int which) {
@@ -170,7 +189,11 @@ public abstract class WiEngineTestActivity extends Activity implements IDirector
             });
     	}
     }
+	@Override
+	public void onSurfaceDestroyed() {
+		// TODO Auto-generated method stub
+		
+	}
     
-    public void onSurfaceDestroyed() {
-    }
+ 
 }

@@ -1,6 +1,9 @@
 package com.android.perkoor.switcher;
 
 import com.android.perkoor.R;
+import com.android.perkoor.layer.BGLayer;
+import com.android.perkoor.layer.CharacterLayer;
+import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.INodeVirtualMethods;
@@ -9,15 +12,16 @@ import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.transitions.RightTopTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
-public class GamePlayingButton extends Layer implements INodeVirtualMethods {
+public class GamePlaying extends Scene {
 	Button pauseButton;
 	Label scoreLabel;
-	public GamePlayingButton() {
+	public GamePlaying() {
 		WYSize size = Director.getInstance().getWindowSize();
 		float scaleX = size.width / 10;
 		float scaleY = size.height / 10;
@@ -40,30 +44,11 @@ public class GamePlayingButton extends Layer implements INodeVirtualMethods {
 	
 	public void onPauseButtonClicked() {
 		addChild(new GamePause());
-		addChild(new GamePauseButton());		
-		
 	}
 	
 	@Override
-	public void jDraw() {
-		// TODO Auto-generated method stub
-		
+	protected boolean onBackButton() {
+		addChild(new GamePause());
+		return true;
 	}
-	@Override
-	public void jOnEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void jOnEnterTransitionDidFinish() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void jOnExit() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
 }
