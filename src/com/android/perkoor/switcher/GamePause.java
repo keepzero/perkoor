@@ -18,7 +18,7 @@ public class GamePause extends Layer implements INodeVirtualMethods {
 		
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
-		mAlphaBackground.setScale(size.width, size.height);
+		//mAlphaBackground.setScale(size.width, size.height);
 		addChild(mAlphaBackground);
 		addChild(mPauseBackground);
 		

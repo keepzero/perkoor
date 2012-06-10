@@ -13,6 +13,7 @@ public class RoofFactory {
 
 		case 1:
 			return new Roof1(w, b, x);
+
 		case 2:
 			return new Roof2(w, b, x);
 		case 3:
@@ -23,8 +24,7 @@ public class RoofFactory {
 			return new Roof5(w, b, x);
 		case 6:
 			return new Roof6(w, b, x);
-		case 7:
-			return new Roof7(w, b, x);
+				
 
 		}
 		return new Roof1(w, b, x);
