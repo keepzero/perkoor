@@ -4,11 +4,12 @@ import com.android.perkoor.R;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.INodeVirtualMethods;
 import com.wiyun.engine.nodes.Layer;
+import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.types.WYSize;
 
-public class GameOver extends Layer {
+public class GameOver extends Scene {
 	Sprite mBackground;
 	public GameOver() {
 		mBackground = Sprite.make(R.drawable.gameover_background);

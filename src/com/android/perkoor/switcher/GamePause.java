@@ -6,7 +6,6 @@ import com.android.perkoor.layer.CharacterLayer;
 import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.INodeVirtualMethods;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
@@ -17,9 +16,9 @@ import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class GamePause extends Layer {
-	Scene mScene;
-	Scene perkoorScene;
+	GameHomepage gameHomepage;
 	
+	Scene perkoorScene;
 	Sprite mPauseBackground;
 	Sprite mAlphaBackground;
 	
@@ -50,6 +49,7 @@ public class GamePause extends Layer {
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
 		mAlphaBackground.setScale(size.width, size.height);
+		
 		Texture2D restart_normal = Texture2D.makePNG(R.drawable.restart_normal);
 		Texture2D restart_selected = Texture2D.makePNG(R.drawable.restart_selected);
 		
@@ -87,7 +87,34 @@ public class GamePause extends Layer {
 		addChild(mPauseBackground);
 		addChild(restartButton);
 		addChild(resumeButton);
-		addChild(homeButton);
+		addChild(homeButton);		
+	}
+	
+	public void onRestartButtonClicked() {
+		perkoorScene = new GamePlaying();
+		perkoorScene.addChild(new BGLayer());
+		perkoorScene.addChild(new CloudLayer());
+		perkoorScene.addChild(new CharacterLayer());
+		perkoorScene.addChild(new GamePlaying());
+		perkoorScene.autoRelease(true);
+		Director.getInstance().pushScene(perkoorScene);
+	}
+	
+	public void onResumeButtonClicked() {		
+		this.setVisible(false);
 		
+	}
+	
+	//返回主界面
+	public void onHomeButtonClicked() {
+		gameHomepage = new GameHomepage();
+		gameHomepage.addChild(new GameHomepage());
+		Director.getInstance().replaceScene(gameHomepage);
+	}
+	
+	@Override
+	protected boolean onBackButton() {
+		this.setVisible(false);
+		return true;
 	}
 }

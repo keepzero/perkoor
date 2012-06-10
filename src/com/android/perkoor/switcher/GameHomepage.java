@@ -1,10 +1,10 @@
 package com.android.perkoor.switcher;
 
+
 import com.android.perkoor.R;
+
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.INodeVirtualMethods;
-import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
@@ -14,8 +14,8 @@ import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
-public class GameHomepage extends Layer {	
-	Scene difficultyScene;
+public class GameHomepage extends Scene {	
+	GameDifficulty gameDifficulty;
 	Sprite mBackground;
 	Button playButton;
 	Button aboutButton;
@@ -24,6 +24,7 @@ public class GameHomepage extends Layer {
 	Button soundButton;
 	Button soundDisableButton;
 	Button helpButton;
+	
 	public GameHomepage() {
 		mBackground = Sprite.make(R.drawable.home_background);
 		WYSize size = Director.getInstance().getWindowSize();
@@ -124,8 +125,44 @@ public class GameHomepage extends Layer {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
-		addChild(helpButton);
-		
+		addChild(helpButton);		
 	}	
+	
+	//按Play跳转到难度选择
+	public void onPlayButtonClicked() {			
+		gameDifficulty = new GameDifficulty();
+		gameDifficulty.autoRelease(true);
+		Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
+	}
+	
+	public void onMusicClicked() {		
+		musicButton.setVisible(false);
+		musicDisableButton.setVisible(true);
+	}
+	
+	public void onMusicDisableClicked() {
+		musicDisableButton.setVisible(false);
+		musicButton.setVisible(true);
+	}
+	
+	public void onSoundClicked() {
+		soundButton.setVisible(false);
+		soundDisableButton.setVisible(true);
+	}
+	
+	public void onSoundDisableClicked() {
+        soundDisableButton.setVisible(false);
+        soundButton.setVisible(true);
+    }
+	
+	public void onHelpClicked() {
+		
+	}
+	
+	@Override
+	protected boolean onBackButton() {
+		
+		return true;
+	}
 
 }

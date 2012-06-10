@@ -4,10 +4,9 @@ import com.android.perkoor.R;
 import com.android.perkoor.layer.BGLayer;
 import com.android.perkoor.layer.CharacterLayer;
 import com.android.perkoor.layer.CloudLayer;
+
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.INodeVirtualMethods;
-import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
@@ -19,22 +18,22 @@ import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
-public class GameDifficulty extends Layer {	
-	Scene mScene;
-	Scene perkoorScene;
-	Scene pauseScene;
+public class GameDifficulty extends Scene {	
 	Sprite mBackground;
+	
+	GameHomepage gameHomepage;
+	Scene perkoorScene;
+	
 	Button easyButton;
 	Button normalButton;
 	Button hardButton;
-	Button backButton;	
-	public GameDifficulty() {
-		mBackground = Sprite.make(R.drawable.difficulty_background);
+	Button backButton;
+	
+	public GameDifficulty() {	
+		mBackground = Sprite.make(R.drawable.home_background);
 		WYSize size = Director.getInstance().getWindowSize();
-		
 		float scaleX = size.width / 10;
 		float scaleY = size.height / 10;
-		
 		Texture2D easy_normal = Texture2D.makePNG(R.drawable.easy_normal);
 		Texture2D easy_selected = Texture2D.makePNG(R.drawable.easy_selected);
 		
@@ -78,23 +77,58 @@ public class GameDifficulty extends Layer {
 				ResolutionIndependent.resolve(WYRect.make(0, -4, 70, 65)));
 		backButton = Button.make(backNormal, backSelected, null, null,
 				new TargetSelector(this, "onBackButtonClicked", null));
-		backButton.setPosition((size.width / 6), (size.height / 6));
-				
-		mBackground.setPosition(size.width / 2, size.height / 2);
+		backButton.setPosition((size.width / 6), (size.height / 6));				
 		
+		mBackground.setPosition(size.width / 2, size.height / 2);
 		addChild(mBackground);
+		
 		addChild(easyButton);
 		addChild(normalButton);
 		addChild(hardButton);
 		addChild(backButton);
 	}
 
+	public void onEasyButtonClicked() {
+		perkoorScene = new GamePlaying();
+		perkoorScene.addChild(new BGLayer());
+		perkoorScene.addChild(new CloudLayer());
+		perkoorScene.addChild(new CharacterLayer());
+		perkoorScene.addChild(new GamePlaying());
+		perkoorScene.autoRelease(true);
+		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
+	}	
 	
-	//返回箭头按钮
-	public void onBackButtonClicked() {
-		mScene = Scene.make();
-		mScene.addChild(new GameHomepage());
-		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make((float) 1, mScene));
+	public void onNormalButtonClicked() {
+		perkoorScene = new GamePlaying();
+		perkoorScene.addChild(new BGLayer());
+		perkoorScene.addChild(new CloudLayer());
+		perkoorScene.addChild(new CharacterLayer());
+		perkoorScene.addChild(new GamePlaying());
+		perkoorScene.autoRelease(true);
+		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 	
+	public void onHardButtonClicked() {
+		perkoorScene = new GamePlaying();
+		perkoorScene.addChild(new BGLayer());
+		perkoorScene.addChild(new CloudLayer());
+		perkoorScene.addChild(new CharacterLayer());
+		perkoorScene.addChild(new GamePlaying());
+		perkoorScene.autoRelease(true);
+		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
+	}
+	
+	public void onBackButtonClicked() {
+		gameHomepage = new GameHomepage();
+		gameHomepage.autoRelease(true);
+		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
+	}
+	
+	 @Override
+	protected boolean onBackButton() {
+		gameHomepage = new GameHomepage();
+		gameHomepage.autoRelease(true);
+		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
+		return true;
+	}
 }
