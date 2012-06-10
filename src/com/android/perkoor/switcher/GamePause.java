@@ -1,5 +1,7 @@
 package com.android.perkoor.switcher;
 
+import android.util.Log;
+
 import com.android.perkoor.R;
 import com.android.perkoor.layer.BGLayer;
 import com.android.perkoor.layer.CharacterLayer;
@@ -28,6 +30,7 @@ public class GamePause extends Layer {
 	
 	public GamePause() {
 		WYSize size = Director.getInstance().getWindowSize();
+		
 		float scaleX = size.width / 1280;
 		float scaleY = size.height / 720;
 		
@@ -49,9 +52,8 @@ public class GamePause extends Layer {
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
 
-		//mAlphaBackground.setScale(size.width, size.height);
 
-		mAlphaBackground.setScale(size.width, size.height);
+		mAlphaBackground.setScale(size.width * 2, size.height * 2);
 		
 		Texture2D restart_normal = Texture2D.makePNG(R.drawable.restart_normal);
 		Texture2D restart_selected = Texture2D.makePNG(R.drawable.restart_selected);
@@ -116,9 +118,4 @@ public class GamePause extends Layer {
 		Director.getInstance().replaceScene(gameHomepage);
 	}
 	
-	@Override
-	protected boolean onBackButton() {
-		this.setVisible(false);
-		return true;
-	}
 }

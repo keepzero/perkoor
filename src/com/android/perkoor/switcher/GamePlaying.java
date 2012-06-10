@@ -39,6 +39,9 @@ public class GamePlaying extends Scene {
 		
 		pauseButton.setPosition(scaleX, (size.height - scaleY));
 		
+		addChild(new BGLayer());
+		addChild(new CloudLayer());
+		addChild(new CharacterLayer());
 		addChild(pauseButton);
 	}
 	

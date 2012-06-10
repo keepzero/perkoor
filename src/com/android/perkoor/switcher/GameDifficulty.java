@@ -90,38 +90,27 @@ public class GameDifficulty extends Scene {
 
 	public void onEasyButtonClicked() {
 		perkoorScene = new GamePlaying();
-		perkoorScene.addChild(new BGLayer());
-		perkoorScene.addChild(new CloudLayer());
-		perkoorScene.addChild(new CharacterLayer());
-		perkoorScene.addChild(new GamePlaying());
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}	
 	
 	public void onNormalButtonClicked() {
 		perkoorScene = new GamePlaying();
-		perkoorScene.addChild(new BGLayer());
-		perkoorScene.addChild(new CloudLayer());
-		perkoorScene.addChild(new CharacterLayer());
-		perkoorScene.addChild(new GamePlaying());
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 	
 	public void onHardButtonClicked() {
 		perkoorScene = new GamePlaying();
-		perkoorScene.addChild(new BGLayer());
-		perkoorScene.addChild(new CloudLayer());
-		perkoorScene.addChild(new CharacterLayer());
-		perkoorScene.addChild(new GamePlaying());
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 	
-	public void onBackButtonClicked() {
+	public boolean onBackButtonClicked() {
 		gameHomepage = new GameHomepage();
 		gameHomepage.autoRelease(true);
 		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
+		return true;
 	}
 	
 	 @Override

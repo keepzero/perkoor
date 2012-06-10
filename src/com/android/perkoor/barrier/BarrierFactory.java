@@ -2,10 +2,11 @@ package com.android.perkoor.barrier;
 
 import com.wiyun.engine.box2d.Box2D;
 import com.wiyun.engine.box2d.dynamics.World;
+import com.wiyun.engine.types.WYPoint;
 
 public class BarrierFactory {
 
-	public static Barrier createBarrier(int i, World w, Box2D b, float x) {
+	public static Barrier createBarrier(int i, World w, Box2D b, WYPoint x) {
 
 		switch (i) {
 
