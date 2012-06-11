@@ -1,9 +1,6 @@
 package com.android.perkoor.switcher;
 
 import com.android.perkoor.R;
-import com.android.perkoor.layer.BGLayer;
-import com.android.perkoor.layer.CharacterLayer;
-import com.android.perkoor.layer.CloudLayer;
 
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
@@ -21,23 +18,26 @@ import com.wiyun.engine.utils.TargetSelector;
 public class GameDifficulty extends Scene {	
 	Sprite mBackground;
 	
-	GameHomepage gameHomepage;
+	Scene gameHomepage;
 	Scene perkoorScene;
 	
 	Button easyButton;
 	Button normalButton;
 	Button hardButton;
 	Button backButton;
-	
-	protected static boolean isMusicClicked;
-	protected static boolean isSoundClicked;
+
 	
 	
-	public GameDifficulty() {	
-		mBackground = Sprite.make(R.drawable.difficulty_background);
+	public GameDifficulty(Scene gameHomepage) {	
+		this.gameHomepage = gameHomepage;
+		
 		WYSize size = Director.getInstance().getWindowSize();
 		float scaleX = size.width / 10;
 		float scaleY = size.height / 10;
+		
+		mBackground = Sprite.make(R.drawable.difficulty_background);
+		mBackground.setPosition(size.width / 2, size.height / 2);
+		
 		Texture2D easy_normal = Texture2D.makePNG(R.drawable.easy_normal);
 		Texture2D easy_selected = Texture2D.makePNG(R.drawable.easy_selected);
 		
@@ -76,45 +76,40 @@ public class GameDifficulty extends Scene {
 		hardButton.setPosition((size.width / 2) + scaleX * 2, (size.height / 2) - (scaleY * 2));
 		
 		Sprite backNormal = Sprite.make(back_normal,
-				ResolutionIndependent.resolve(WYRect.make(4, 0, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
 		Sprite backSelected = Sprite.make(back_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -4, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
 		backButton = Button.make(backNormal, backSelected, null, null,
 				new TargetSelector(this, "onBackButtonClicked", null));
 		backButton.setPosition((size.width / 6), (size.height / 6));				
-		
-		mBackground.setPosition(size.width / 2, size.height / 2);
+				
 		addChild(mBackground);
 		
 		addChild(easyButton);
 		addChild(normalButton);
 		addChild(hardButton);
 		addChild(backButton);
-		System.out.println("GameDifficulity isMusicClicked is " + isMusicClicked);
-		System.out.println("GameDifficulity isSoundClicked is " + isSoundClicked);
 	}
 
 	public void onEasyButtonClicked() {
-		perkoorScene = new GamePlaying();
+		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}	
 	
 	public void onNormalButtonClicked() {
-		perkoorScene = new GamePlaying();
+		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 	
 	public void onHardButtonClicked() {
-		perkoorScene = new GamePlaying();
+		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 
 	public boolean onBackButtonClicked() {
-		gameHomepage = new GameHomepage();
-		gameHomepage.autoRelease(true);
 		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
 		return true;
 
@@ -122,8 +117,6 @@ public class GameDifficulty extends Scene {
 	
 	 @Override
 	protected boolean onBackButton() {
-		gameHomepage = new GameHomepage();
-		gameHomepage.autoRelease(true);
 		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
 		return true;
 	}

@@ -14,8 +14,6 @@ import android.view.WindowManager.LayoutParams;
 import com.android.perkoor.switcher.GameHomepage;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Director.IDirectorLifecycleListener;
-import com.wiyun.engine.nodes.Layer;
-import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.opengl.WYGLSurfaceView;
 
 public class PerkoorActivity extends Activity implements IDirectorLifecycleListener {
@@ -93,7 +91,7 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
     }
     
 	protected void createScene() {
-		gameHomepage = new GameHomepage();
+		gameHomepage = new MyScene();
 		gameHomepage.autoRelease(true);
 		Director.getInstance().runWithScene(gameHomepage);
 	}
@@ -195,5 +193,44 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
 		
 	}
     
+	void showExitConfirm() {
+		runOnUiThread(new Runnable() {
+			public void run() {
+				AlertDialog.Builder builder = new Builder(PerkoorActivity.this);
+				builder.setMessage("Do you really want to exit exciting perkoor ?")
+				.setNegativeButton("No", null)
+				.setPositiveButton("Yes", new OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				}).show();
+			}
+		});
+	}
+	
+	class MyScene extends GameHomepage {
+		public MyScene() {
+			/*
+			 * Scene类缺省是处理back键的，但是我们有很多方式可以自定义处理back键
+			 * 1. 继承Scene，覆盖onBackButton
+			 * 2. 禁止Scene处理key事件(setKeyEnabled(false))，让其它节点处理
+			 * 3. 添加一个优先级比Scene高的key事件处理器，相当于不让Scene处理, Scene缺省的优先级是0，指定一个
+			 * 比0大的数就行
+			 *
+			 * 这个demo用第一种方式
+			 */
+            
+            //　必须调用一次，使事件重定向到java端
+            setKeyEnabled(true);
+            
+            autoRelease(true);
+		}
+		
+		@Override
+		protected boolean onBackButton() {
+			showExitConfirm();
+			return true;
+		}
+	}
  
 }

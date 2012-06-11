@@ -1,11 +1,6 @@
 package com.android.perkoor.switcher;
 
-import android.util.Log;
-
 import com.android.perkoor.R;
-import com.android.perkoor.layer.BGLayer;
-import com.android.perkoor.layer.CharacterLayer;
-import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Layer;
@@ -18,7 +13,7 @@ import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class GamePause extends Layer {
-	GameHomepage gameHomepage;
+	Scene gameHomepage;
 	
 	Scene perkoorScene;
 	Sprite mPauseBackground;
@@ -28,10 +23,9 @@ public class GamePause extends Layer {
 	Button resumeButton;
 	Button homeButton;
 	
-	protected static boolean isMusicClicked = GameHomepage.isMusicClicked;
-	protected static boolean isSoundClicked = GameHomepage.isSoundClicked;
 	
-	public GamePause() {
+	public GamePause(Scene gameHomepage) {
+		this.gameHomepage = gameHomepage;
 		WYSize size = Director.getInstance().getWindowSize();
 		
 		float scaleX = size.width / 1280;
@@ -45,7 +39,7 @@ public class GamePause extends Layer {
 		if(size.width == 800 || size.height == 480) {
 			mPauseBackground.setScale(scaleX, scaleY);
 		}
-		else {
+		else if(size.width > 800 || size.height > 480) {
 			mPauseBackground.setScale(640 / size.width, 384 / size.height);
 		}
 		mPauseBackground.setPosition(size.width / 2, size.height / 2);
@@ -100,20 +94,24 @@ public class GamePause extends Layer {
 	}
 	
 	public void onRestartButtonClicked() {
-		perkoorScene = new GamePlaying();
+		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
+		Director director = Director.getInstance();
+		director.resumeUI();
 		Director.getInstance().replaceScene(perkoorScene);
 	}
 	
-	public void onResumeButtonClicked() {		
+	public void onResumeButtonClicked() {	
+		Director director = Director.getInstance();
+		director.resumeUI();
 		this.setVisible(false);
 		
 	}
 	
 	//返回主界面
 	public void onHomeButtonClicked() {
-		gameHomepage = new GameHomepage();
-		gameHomepage.addChild(new GameHomepage());
+		Director director = Director.getInstance();
+		director.resumeUI();
 		Director.getInstance().replaceScene(gameHomepage);
 	}
 	

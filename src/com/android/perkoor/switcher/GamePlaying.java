@@ -7,6 +7,7 @@ import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Label;
+import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
@@ -18,7 +19,13 @@ import com.wiyun.engine.utils.TargetSelector;
 public class GamePlaying extends Scene {
 	protected Button pauseButton;
 	Label scoreLabel;
-	public GamePlaying() {
+	Scene gameHomepage;
+	
+	Layer gamePause;
+	
+	public GamePlaying(Scene gameHomepage) {
+		gamePause = new GamePause(gameHomepage);
+		this.gameHomepage = gameHomepage;
 		WYSize size = Director.getInstance().getWindowSize();
 		float scaleX = size.width / 10;
 		float scaleY = size.height / 10;
@@ -40,15 +47,23 @@ public class GamePlaying extends Scene {
 		addChild(new CloudLayer());
 		addChild(new CharacterLayer());
 		addChild(pauseButton);
+		addChild(gamePause);
+		gamePause.setVisible(false);
 	}
 	
 	public void onPauseButtonClicked() {
-		addChild(new GamePause());
+		Director director = Director.getInstance();
+		gamePause.setVisible(true);
+		director.pauseUI();
+		
 	}
 	
 	@Override
 	protected boolean onBackButton() {
-		addChild(new GamePause());
+		Director director = Director.getInstance();
+		gamePause.setVisible(true);
+		director.pauseUI();
+		
 		return true;
 	}
 }

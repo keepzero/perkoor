@@ -133,9 +133,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 游戏结束标志
 
 		if(isOver()){
-			gameOver = new GameOver();
-			gameOver.autoRelease(true);
-			Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameOver));
+			//gameOver = new GameOver();
+			//gameOver.autoRelease(true);
+			//Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameOver));
 			System.out.println("game over");
 		}
 

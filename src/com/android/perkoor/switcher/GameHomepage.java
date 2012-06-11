@@ -8,7 +8,9 @@ import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.transitions.ColorFadeTransition;
 import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
+import com.wiyun.engine.types.WYColor3B;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
@@ -16,7 +18,6 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class GameHomepage extends Scene {	
 	GameDifficulty gameDifficulty;
-	protected static GameHomepage gameHomepage = new GameHomepage();
 	Sprite mBackground;
 	Button playButton;
 	Button aboutButton;
@@ -25,17 +26,17 @@ public class GameHomepage extends Scene {
 	Button soundButton;
 	Button soundDisableButton;
 	Button helpButton;
-	
-
-	protected static boolean isMusicClicked;
-	protected static boolean isSoundClicked;
 
 	
-	public GameHomepage() {
-		mBackground = Sprite.make(R.drawable.home_background);
+	public GameHomepage() {				
 		WYSize size = Director.getInstance().getWindowSize();
 		float scaleX = size.width / 10;
 		float scaleY = size.height / 10;
+		
+		mBackground = Sprite.make(R.drawable.home_background);
+		mBackground.setPosition(size.width / 2, size.height / 2);
+		
+		
 		//Texture2D 声明
 		Texture2D play_normal = Texture2D.makePNG(R.drawable.play_normal);
 		Texture2D play_selected = Texture2D.makePNG(R.drawable.play_selected);
@@ -91,6 +92,7 @@ public class GameHomepage extends Scene {
 		
 		musicButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
 		musicDisableButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
+		musicDisableButton.setVisible(false);
 		
 		//音效按钮
 		Sprite SoundNormal = Sprite.make(sound_normal,
@@ -108,7 +110,8 @@ public class GameHomepage extends Scene {
 				new TargetSelector(this, "onSoundDisableClicked", null));
 		
 		soundButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));
-		soundDisableButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));		
+		soundDisableButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));	
+		soundDisableButton.setVisible(false);
 
 		//帮助按钮
 		Sprite HelpNormal = Sprite.make(help_normal,
@@ -119,8 +122,7 @@ public class GameHomepage extends Scene {
 		helpButton = Button.make(HelpNormal, HelpSelected, null, null,
 				new TargetSelector(this, "onHelpClicked", null));
 		helpButton.setPosition((size.width / 2) + ((scaleX + scaleY) * 2), (size.height / 5) - (scaleY / 2));
-				
-		mBackground.setPosition(size.width / 2, size.height / 2);
+						
 		addChild(mBackground);
 		
 		addChild(playButton);
@@ -129,54 +131,29 @@ public class GameHomepage extends Scene {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
-
 		addChild(helpButton);	
 		
-		if(isMusicClicked == true)
-		{
-			musicButton.setVisible(false);
-			musicDisableButton.setVisible(true);
-		}
-		else if(isMusicClicked == false) {
-			musicButton.setVisible(true);
-			musicDisableButton.setVisible(false);
-		}
-		if(isSoundClicked == true)
-		{
-			soundButton.setVisible(false);
-			soundDisableButton.setVisible(true);
-		}
-		else if(isSoundClicked == false) {
-			soundButton.setVisible(true);
-			soundDisableButton.setVisible(false);			
-		}
-		System.out.println("GameHomepage isMusicClicked is " + isMusicClicked);
-		System.out.println("GameHomepage isSoundClicked is " + isSoundClicked);
 		
 	}		
 	
 	public void onMusicClicked() {		
 		musicButton.setVisible(false);
 		musicDisableButton.setVisible(true);
-		isMusicClicked = true;
 	}
 	
 	public void onMusicDisableClicked() {
 		musicDisableButton.setVisible(false);
 		musicButton.setVisible(true);
-		isMusicClicked = false;
 	}
 	
 	public void onSoundClicked() {
 		soundButton.setVisible(false);
 		soundDisableButton.setVisible(true);
-		isSoundClicked = true;
 	}
 	
 	public void onSoundDisableClicked() {
         soundDisableButton.setVisible(false);
         soundButton.setVisible(true);
-        isSoundClicked = false;
     }
 	
 	public void onHelpClicked() {
@@ -185,11 +162,10 @@ public class GameHomepage extends Scene {
 	
 	//按Play跳转到难度选择
 	public void onPlayButtonClicked() {			
-		gameDifficulty = new GameDifficulty();
+		gameDifficulty = new GameDifficulty(GameHomepage.this);
 		gameDifficulty.autoRelease(true);
-		GameDifficulty.isMusicClicked = isMusicClicked;
-		GameDifficulty.isSoundClicked = isSoundClicked;
-		Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
+		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, gameDifficulty, new WYColor3B(0, 0, 0)));
+		//Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
 	}
 	
 }
