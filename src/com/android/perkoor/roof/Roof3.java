@@ -23,6 +23,7 @@ public class Roof3 extends Roof{
 		bodyRoof.setTransform(mBox2d.pixel2Meter(x), mBox2d.pixel2Meter(0f), 0);
 
 		Sprite sprite = Sprite.make(R.drawable.roof_3);
+		super.sprite=sprite;
 		sprite.autoRelease();
 		
 		WYPoint anchor = mLoader.getAnchorPercent("roof_3");

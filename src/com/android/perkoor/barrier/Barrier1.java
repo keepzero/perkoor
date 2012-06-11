@@ -9,7 +9,7 @@ import com.wiyun.engine.types.WYPoint;
 
 public class Barrier1 extends Barrier{
 	
-	public Barrier1(World world,Box2D box2d, float x){
+	public Barrier1(World world,Box2D box2d, WYPoint point){
 		
 		super(world, box2d);
 		
@@ -17,18 +17,18 @@ public class Barrier1 extends Barrier{
 		bodyBarrier.setType(Body.TYPE_KINEMATIC);
 		
 			
-		bodyBarrier.setTransform(mBox2d.pixel2Meter(x), mBox2d.pixel2Meter(0f), 0);
+		bodyBarrier.setTransform(point.x, point.y, 0);
 
 		Sprite sprite = Sprite.make(R.drawable.barrier1);
 		sprite.autoRelease();
 		
 		WYPoint anchor = mLoader.getAnchorPercent("barrier1");
 		sprite.setAnchor(anchor.x,anchor.y);
-		sprite.setPosition(x, 0f);
+		sprite.setPosition(mBox2d.meter2Pixel(point.x),mBox2d.meter2Pixel(point.y));
 		bodyBarrier.setUserData(sprite);
 
 
-		mBox2d.addChild(sprite,0);
+		mBox2d.addChild(sprite,1);
 	}
 
 }

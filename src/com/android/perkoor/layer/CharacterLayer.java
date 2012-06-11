@@ -1,9 +1,15 @@
 package com.android.perkoor.layer;
 
+import java.util.Random;
+
 import android.view.MotionEvent;
 
 import com.android.perkoor.R;
+import com.android.perkoor.barrier.Barrier;
+
+import com.android.perkoor.barrier.BarrierFactory;
 import com.android.perkoor.roof.*;
+import com.android.perkoor.switcher.GameOver;
 import com.wiyun.engine.afcanim.SPX3Sprite;
 import com.wiyun.engine.afcanim.SPXSprite;
 import com.wiyun.engine.box2d.Box2DRender;
@@ -16,14 +22,16 @@ import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.box2d.dynamics.World.IContactListener;
 import com.wiyun.engine.box2d.dynamics.contacts.Contact;
 import com.wiyun.engine.nodes.Director;
+import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.afcanim.AFCSprite.IAFCSpriteCallback;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class CharacterLayer extends Box2DLayer implements IContactListener {
-
+	GameOver gameOver;
 	Body bodyroof;
 	Body body; // 申明人物刚体
 	Fixture f; // 声明刚体附加属性
@@ -32,9 +40,11 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float X_sta = 0, X_end = 0; // 初始与终止x 轴 坐标 触摸点声明
 	float tital_x = 0, tital_y = 0; // 手指滑动距离
 	static float hight = 5; // 跳跃高度声明
-	static float highter = 15;
+	static float highter = 13;
 	static float SPEED = 15;
+	int numNext = 1;
 	FixtureAnimation anim;
+	
 
 	boolean jump = false;
 	boolean run = true;
@@ -98,15 +108,37 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width / 3, 0);
 
-		// 屋顶生成
-		if (pX > mLocation) {
-			mLocation += s.width;
-			RoofFactory
-					.createRoof(Roof.getRandom(6), mWorld, mBox2D, mLocation);
+		// 屋顶生成   障碍物添加
+		{
+			if (pX > mLocation) {
+
+				Random num = new Random();
+				numNext = num.nextInt(4);
+				mLocation += s.width;
+				Roof tempRoof = RoofFactory.createRoof(Roof.getRandom(6),
+						mWorld, mBox2D, mLocation);
+				WYPoint trsPoint = Roof.bodyRoof.getPosition();
+
+				if (numNext != 1 && numNext != 4) {
+					trsPoint.x += mBox2D.pixel2Meter(tempRoof.sprite.getWidth()
+							/ numNext);
+					trsPoint.y += mBox2D.pixel2Meter(tempRoof.sprite
+							.getHeight() - 10f);
+					BarrierFactory.createBarrier(Barrier.getRandom(5), mWorld,
+							mBox2D, trsPoint);
+				}
+
+			}
 		}
-		/*
-		 * if (body.getLinearVelocity().y == 0) { anim.start(f); }
-		 */
+		// 游戏结束标志
+
+		if(isOver()){
+			gameOver = new GameOver();
+			gameOver.autoRelease(true);
+			Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameOver));
+			System.out.println("game over");
+		}
+
 
 		// TODO 循环屋顶
 		// 线程
@@ -138,7 +170,6 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		tital_x = X_end - X_sta; // x轴距离差
 
 		if (tital_x > 10 && tital_y > 10) { // 判断是否起跳
-			System.out.println("jump");
 			jump();
 		}
 
@@ -197,6 +228,18 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 	}
 
+	protected boolean isOver() {
+
+		if (body.getLinearVelocity().x <= 0) {
+			return true;
+		}
+		if (body.getPosition().y <= 0) {
+			return true;
+		}
+		return false;
+
+	}
+
 	@Override
 	public void beginContact(int arg0) {
 		// TODO Auto-generated method stub
@@ -226,7 +269,6 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		Contact contact = Contact.from(arg0);
 		Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
-		System.out.println("r" + fixtureA);
 		if (fixtureA.equals(f)) {
 
 		}

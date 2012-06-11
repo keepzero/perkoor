@@ -23,7 +23,7 @@ public abstract class Roof {
 	WYSize s; 
 	PELoader mLoader;
 
-	protected Sprite sprite;
+	public Sprite sprite;
 	public static Body bodyRoof;
 
 	public Roof(World world, Box2D box2d) {

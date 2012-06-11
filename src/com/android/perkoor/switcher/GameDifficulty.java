@@ -29,11 +29,9 @@ public class GameDifficulty extends Scene {
 	Button hardButton;
 	Button backButton;
 	
-	protected static boolean isMusicClicked; // = GameHomepage.isMusicClicked;
-	protected static boolean isSoundClicked; // = GameHomepage.isSoundClicked;
+	protected static boolean isMusicClicked;
+	protected static boolean isSoundClicked;
 	
-	protected static boolean MusicDisabled;
-	protected static boolean SoundDisabled;
 	
 	public GameDifficulty() {	
 		mBackground = Sprite.make(R.drawable.difficulty_background);
@@ -92,6 +90,8 @@ public class GameDifficulty extends Scene {
 		addChild(normalButton);
 		addChild(hardButton);
 		addChild(backButton);
+		System.out.println("GameDifficulity isMusicClicked is " + isMusicClicked);
+		System.out.println("GameDifficulity isSoundClicked is " + isSoundClicked);
 	}
 
 	public void onEasyButtonClicked() {
@@ -111,19 +111,17 @@ public class GameDifficulty extends Scene {
 		perkoorScene.autoRelease(true);
 		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
-	
-	public void onBackButtonClicked() {
-		MusicDisabled = isMusicClicked;
-		SoundDisabled = isSoundClicked;
+
+	public boolean onBackButtonClicked() {
 		gameHomepage = new GameHomepage();
 		gameHomepage.autoRelease(true);
-		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1,gameHomepage));
+		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));
+		return true;
+
 	}
 	
 	 @Override
 	protected boolean onBackButton() {
-		MusicDisabled = isMusicClicked;
-		SoundDisabled = isSoundClicked;
 		gameHomepage = new GameHomepage();
 		gameHomepage.autoRelease(true);
 		Director.getInstance().replaceScene(RightTopTilesShrinkOutTransition.make(1, gameHomepage));

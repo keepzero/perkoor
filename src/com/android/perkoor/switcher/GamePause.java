@@ -1,5 +1,7 @@
 package com.android.perkoor.switcher;
 
+import android.util.Log;
+
 import com.android.perkoor.R;
 import com.android.perkoor.layer.BGLayer;
 import com.android.perkoor.layer.CharacterLayer;
@@ -31,6 +33,7 @@ public class GamePause extends Layer {
 	
 	public GamePause() {
 		WYSize size = Director.getInstance().getWindowSize();
+		
 		float scaleX = size.width / 1280;
 		float scaleY = size.height / 720;
 		
@@ -114,9 +117,4 @@ public class GamePause extends Layer {
 		Director.getInstance().replaceScene(gameHomepage);
 	}
 	
-	@Override
-	protected boolean onBackButton() {
-		this.setVisible(false);
-		return true;
-	}
 }

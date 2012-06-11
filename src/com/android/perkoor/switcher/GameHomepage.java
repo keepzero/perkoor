@@ -26,12 +26,10 @@ public class GameHomepage extends Scene {
 	Button soundDisableButton;
 	Button helpButton;
 	
+
 	protected static boolean isMusicClicked;
 	protected static boolean isSoundClicked;
-	
-	protected static boolean MusicDisabled = GameDifficulty.MusicDisabled;
-	protected static boolean SoundDisabled = GameDifficulty.SoundDisabled;
-	
+
 	
 	public GameHomepage() {
 		mBackground = Sprite.make(R.drawable.home_background);
@@ -131,26 +129,30 @@ public class GameHomepage extends Scene {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
+
 		addChild(helpButton);	
 		
-		if(MusicDisabled == true)
+		if(isMusicClicked == true)
 		{
 			musicButton.setVisible(false);
 			musicDisableButton.setVisible(true);
 		}
-		else if(MusicDisabled == false) {
+		else if(isMusicClicked == false) {
 			musicButton.setVisible(true);
 			musicDisableButton.setVisible(false);
 		}
-		if(SoundDisabled == true)
+		if(isSoundClicked == true)
 		{
 			soundButton.setVisible(false);
 			soundDisableButton.setVisible(true);
 		}
-		else if(SoundDisabled == false) {
+		else if(isSoundClicked == false) {
 			soundButton.setVisible(true);
 			soundDisableButton.setVisible(false);			
 		}
+		System.out.println("GameHomepage isMusicClicked is " + isMusicClicked);
+		System.out.println("GameHomepage isSoundClicked is " + isSoundClicked);
+		
 	}		
 	
 	public void onMusicClicked() {		
