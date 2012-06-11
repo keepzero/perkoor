@@ -6,20 +6,17 @@ import com.android.perkoor.layer.CharacterLayer;
 import com.android.perkoor.layer.CloudLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.INodeVirtualMethods;
 import com.wiyun.engine.nodes.Label;
-import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
-import com.wiyun.engine.transitions.RightTopTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class GamePlaying extends Scene {
-	Button pauseButton;
+	protected Button pauseButton;
 	Label scoreLabel;
 	public GamePlaying() {
 		WYSize size = Director.getInstance().getWindowSize();
@@ -39,6 +36,9 @@ public class GamePlaying extends Scene {
 		
 		pauseButton.setPosition(scaleX, (size.height - scaleY));
 		
+		addChild(new BGLayer());
+		addChild(new CloudLayer());
+		addChild(new CharacterLayer());
 		addChild(pauseButton);
 	}
 	

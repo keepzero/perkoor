@@ -16,6 +16,7 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class GameHomepage extends Scene {	
 	GameDifficulty gameDifficulty;
+	protected static GameHomepage gameHomepage = new GameHomepage();
 	Sprite mBackground;
 	Button playButton;
 	Button aboutButton;
@@ -24,6 +25,13 @@ public class GameHomepage extends Scene {
 	Button soundButton;
 	Button soundDisableButton;
 	Button helpButton;
+	
+	protected static boolean isMusicClicked;
+	protected static boolean isSoundClicked;
+	
+	protected static boolean MusicDisabled = GameDifficulty.MusicDisabled;
+	protected static boolean SoundDisabled = GameDifficulty.SoundDisabled;
+	
 	
 	public GameHomepage() {
 		mBackground = Sprite.make(R.drawable.home_background);
@@ -51,22 +59,22 @@ public class GameHomepage extends Scene {
 		
 		//PLAY按钮
 		Sprite playNormal = Sprite.make(play_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0, 166, 54)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 180, 60)));
 		Sprite playSelected = Sprite.make(play_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 166, 54)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 180, 60)));
 		
 		playButton = Button.make(playNormal, playSelected,null, null,
 				new TargetSelector(this, "onPlayButtonClicked",null));
-		playButton.setPosition((size.width /4) - (scaleX / 3), (size.height / 2) - (scaleY / 2) );
+		playButton.setPosition((size.width / 2) - (scaleX * 2), (size.height / 2) - (scaleY) );
 		
 		//关于按钮
 		Sprite aboutNormal = Sprite.make(about_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0, 175, 59)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 180, 60)));
 		Sprite aboutSelected = Sprite.make(about_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 175, 59)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 180, 60)));
 		
 		aboutButton = Button.make(aboutNormal, aboutSelected, null, null);
-		aboutButton.setPosition((size.width /4) - (scaleX / 3), (size.height / 5) - (scaleY / 5));
+		aboutButton.setPosition((size.width / 2) + (scaleX * 2), (size.height / 2) - (scaleY));
 
 		//音乐按钮
 		Sprite MusicNormal = Sprite.make(music_normal,
@@ -85,7 +93,6 @@ public class GameHomepage extends Scene {
 		
 		musicButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
 		musicDisableButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
-		musicDisableButton.setVisible(false);
 		
 		//音效按钮
 		Sprite SoundNormal = Sprite.make(sound_normal,
@@ -103,8 +110,7 @@ public class GameHomepage extends Scene {
 				new TargetSelector(this, "onSoundDisableClicked", null));
 		
 		soundButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));
-		soundDisableButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));
-		soundDisableButton.setVisible(false);
+		soundDisableButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));		
 
 		//帮助按钮
 		Sprite HelpNormal = Sprite.make(help_normal,
@@ -125,44 +131,63 @@ public class GameHomepage extends Scene {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
-		addChild(helpButton);		
-	}	
-	
-	//按Play跳转到难度选择
-	public void onPlayButtonClicked() {			
-		gameDifficulty = new GameDifficulty();
-		gameDifficulty.autoRelease(true);
-		Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
-	}
+		addChild(helpButton);	
+		
+		if(MusicDisabled == true)
+		{
+			musicButton.setVisible(false);
+			musicDisableButton.setVisible(true);
+		}
+		else if(MusicDisabled == false) {
+			musicButton.setVisible(true);
+			musicDisableButton.setVisible(false);
+		}
+		if(SoundDisabled == true)
+		{
+			soundButton.setVisible(false);
+			soundDisableButton.setVisible(true);
+		}
+		else if(SoundDisabled == false) {
+			soundButton.setVisible(true);
+			soundDisableButton.setVisible(false);			
+		}
+	}		
 	
 	public void onMusicClicked() {		
 		musicButton.setVisible(false);
 		musicDisableButton.setVisible(true);
+		isMusicClicked = true;
 	}
 	
 	public void onMusicDisableClicked() {
 		musicDisableButton.setVisible(false);
 		musicButton.setVisible(true);
+		isMusicClicked = false;
 	}
 	
 	public void onSoundClicked() {
 		soundButton.setVisible(false);
 		soundDisableButton.setVisible(true);
+		isSoundClicked = true;
 	}
 	
 	public void onSoundDisableClicked() {
         soundDisableButton.setVisible(false);
         soundButton.setVisible(true);
+        isSoundClicked = false;
     }
 	
 	public void onHelpClicked() {
 		
 	}
 	
-	@Override
-	protected boolean onBackButton() {
-		
-		return true;
+	//按Play跳转到难度选择
+	public void onPlayButtonClicked() {			
+		gameDifficulty = new GameDifficulty();
+		gameDifficulty.autoRelease(true);
+		GameDifficulty.isMusicClicked = isMusicClicked;
+		GameDifficulty.isSoundClicked = isSoundClicked;
+		Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
 	}
-
+	
 }

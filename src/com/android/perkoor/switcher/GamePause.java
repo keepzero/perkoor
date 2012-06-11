@@ -26,6 +26,9 @@ public class GamePause extends Layer {
 	Button resumeButton;
 	Button homeButton;
 	
+	protected static boolean isMusicClicked = GameHomepage.isMusicClicked;
+	protected static boolean isSoundClicked = GameHomepage.isSoundClicked;
+	
 	public GamePause() {
 		WYSize size = Director.getInstance().getWindowSize();
 		float scaleX = size.width / 1280;
@@ -49,9 +52,8 @@ public class GamePause extends Layer {
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
 
-		//mAlphaBackground.setScale(size.width, size.height);
 
-		mAlphaBackground.setScale(size.width, size.height);
+		mAlphaBackground.setScale(size.width * 2, size.height * 2);
 		
 		Texture2D restart_normal = Texture2D.makePNG(R.drawable.restart_normal);
 		Texture2D restart_selected = Texture2D.makePNG(R.drawable.restart_selected);
@@ -96,12 +98,8 @@ public class GamePause extends Layer {
 	
 	public void onRestartButtonClicked() {
 		perkoorScene = new GamePlaying();
-		perkoorScene.addChild(new BGLayer());
-		perkoorScene.addChild(new CloudLayer());
-		perkoorScene.addChild(new CharacterLayer());
-		perkoorScene.addChild(new GamePlaying());
 		perkoorScene.autoRelease(true);
-		Director.getInstance().pushScene(perkoorScene);
+		Director.getInstance().replaceScene(perkoorScene);
 	}
 	
 	public void onResumeButtonClicked() {		
