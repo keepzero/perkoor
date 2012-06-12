@@ -27,25 +27,25 @@ public class GamePlaying extends Scene {
 		gamePause = new GamePause(gameHomepage);
 		this.gameHomepage = gameHomepage;
 		WYSize size = Director.getInstance().getWindowSize();
-		float scaleX = size.width / 10;
-		float scaleY = size.height / 10;
+		float adaptX = size.width / 10;
+		float adaptY = size.height / 10;
 		
 		Texture2D pause_normal = Texture2D.makePNG(R.drawable.pause_normal);
 		Texture2D pause_selected = Texture2D.makePNG(R.drawable.pause_selected);
 		
 		Sprite pauseNormal = Sprite.make(pause_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0,	70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0,	60, 56)));
 		Sprite pauseSelected = Sprite.make(pause_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 60, 56)));
 		
 		pauseButton = Button.make(pauseNormal, pauseSelected, null, null,
 				new TargetSelector(this, "onPauseButtonClicked", null));
 		
-		pauseButton.setPosition(scaleX, (size.height - scaleY));
+		pauseButton.setPosition((adaptX / 4 * 3), (size.height - (adaptY / 4 * 3)));
 		
 		addChild(new BGLayer());
 		addChild(new CloudLayer());
-		addChild(new CharacterLayer());
+		addChild(new CharacterLayer(gameHomepage));
 		addChild(pauseButton);
 		addChild(gamePause);
 		gamePause.setVisible(false);

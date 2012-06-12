@@ -22,6 +22,8 @@ import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.box2d.dynamics.World.IContactListener;
 import com.wiyun.engine.box2d.dynamics.contacts.Contact;
 import com.wiyun.engine.nodes.Director;
+import com.wiyun.engine.nodes.Layer;
+import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.afcanim.AFCSprite.IAFCSpriteCallback;
 import com.wiyun.engine.opengl.Texture2D;
@@ -31,7 +33,8 @@ import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class CharacterLayer extends Box2DLayer implements IContactListener {
-	GameOver gameOver;
+	Scene gameHomepage;
+	Layer gameoverLayer;
 	Body bodyroof;
 	Body body; // 申明人物刚体
 	Fixture f; // 声明刚体附加属性
@@ -51,8 +54,12 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	// box2d 的位置
 	float mLocation;
 
-	public CharacterLayer() {
-
+	public CharacterLayer(Scene gameHomepage) {
+		gameoverLayer = new GameOver(gameHomepage);
+		this.gameHomepage = gameHomepage;
+		addChild(gameoverLayer);
+		gameoverLayer.setVisible(false);
+		
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
 		mLocation = s.width;
 
@@ -133,9 +140,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 游戏结束标志
 
 		if(isOver()){
-			//gameOver = new GameOver();
-			//gameOver.autoRelease(true);
-			//Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameOver));
+			/*Director director = Director.getInstance();
+			director.pauseUI();*/
+			gameoverLayer.setVisible(true);
 			System.out.println("game over");
 		}
 

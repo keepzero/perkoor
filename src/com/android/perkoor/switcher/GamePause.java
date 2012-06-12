@@ -13,9 +13,9 @@ import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
 public class GamePause extends Layer {
-	Scene gameHomepage;
-	
+	Scene gameHomepage;	
 	Scene perkoorScene;
+	
 	Sprite mPauseBackground;
 	Sprite mAlphaBackground;
 	
@@ -27,24 +27,16 @@ public class GamePause extends Layer {
 	public GamePause(Scene gameHomepage) {
 		this.gameHomepage = gameHomepage;
 		WYSize size = Director.getInstance().getWindowSize();
+	
+		mPauseBackground = Sprite.make(R.drawable.pause_background);
 		
-		float scaleX = size.width / 1280;
-		float scaleY = size.height / 720;
+		float adaptX = (size.width / mPauseBackground.getWidth()) / 2;
+		float adaptY = (size.height / mPauseBackground.getHeight()) / 2;
+		float pauseX = mPauseBackground.getWidth() / 10;
+		float pauseY = mPauseBackground.getHeight() / 10;
 		
-		mPauseBackground = Sprite.make(R.drawable.pause_background);		
-		if(size.width < 800 || size.height < 480)
-		{
-			mPauseBackground.setScale(size.width / 800, size.height / 480);
-		}
-		if(size.width == 800 || size.height == 480) {
-			mPauseBackground.setScale(scaleX, scaleY);
-		}
-		else if(size.width > 800 || size.height > 480) {
-			mPauseBackground.setScale(640 / size.width, 384 / size.height);
-		}
+		mPauseBackground.setScale(adaptX, adaptY);
 		mPauseBackground.setPosition(size.width / 2, size.height / 2);
-		float zoomX = mPauseBackground.getWidth() / 10;
-		float zoomY = mPauseBackground.getHeight() / 10;
 		
 		mAlphaBackground = Sprite.make(R.drawable.white);
 		mAlphaBackground.setAlpha(128);
@@ -62,28 +54,28 @@ public class GamePause extends Layer {
 		Texture2D home_selected = Texture2D.makePNG(R.drawable.home_selected);
 		
 		Sprite restartNormal = Sprite.make(restart_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 60, 56)));
 		Sprite restartSelected = Sprite.make(restart_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 60, 56)));
 		restartButton = Button.make(restartNormal, restartSelected, null, null,
 				new TargetSelector(this, "onRestartButtonClicked", null));
-		restartButton.setPosition((size.width / 2) - (zoomX + zoomY), (size.height / 2) - (zoomY * 3 / 2));
+		restartButton.setPosition((size.width / 2) - (pauseX * 2), (size.height / 2) - (pauseY * 2));
 		
 		Sprite resumeNormal = Sprite.make(continue_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 60, 56)));
 		Sprite resumeSelected = Sprite.make(continue_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 60, 56)));
 		resumeButton = Button.make(resumeNormal, resumeSelected, null, null,
 				new TargetSelector(this, "onResumeButtonClicked", null));
-		resumeButton.setPosition((size.width / 2), (size.height / 2) - (zoomY * 3 / 2));
+		resumeButton.setPosition((size.width / 2), (size.height / 2) - (pauseY * 2));
 		
 		Sprite homeNormal = Sprite.make(home_normal,
-				ResolutionIndependent.resolve(WYRect.make(2, 0, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(2, 0, 60, 56)));
 		Sprite homeSelected = Sprite.make(home_selected,
-				ResolutionIndependent.resolve(WYRect.make(0, -2, 70, 65)));
+				ResolutionIndependent.resolve(WYRect.make(0, -2, 60, 56)));
 		homeButton = Button.make(homeNormal, homeSelected, null, null,
 				new TargetSelector(this, "onHomeButtonClicked", null));
-		homeButton.setPosition((size.width / 2 ) + (zoomX + zoomY), (size.height / 2) - (zoomY * 3 / 2));		
+		homeButton.setPosition((size.width / 2 ) + (pauseX * 2), (size.height / 2) - (pauseY * 2));		
 		
 
 		addChild(mAlphaBackground);
@@ -104,8 +96,7 @@ public class GamePause extends Layer {
 	public void onResumeButtonClicked() {	
 		Director director = Director.getInstance();
 		director.resumeUI();
-		this.setVisible(false);
-		
+		this.setVisible(false);		
 	}
 	
 	//返回主界面

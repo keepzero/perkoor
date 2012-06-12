@@ -18,6 +18,7 @@ import com.wiyun.engine.utils.TargetSelector;
 
 public class GameHomepage extends Scene {	
 	GameDifficulty gameDifficulty;
+	GameHelp gameHelp;
 	Sprite mBackground;
 	Button playButton;
 	Button aboutButton;
@@ -30,10 +31,15 @@ public class GameHomepage extends Scene {
 	
 	public GameHomepage() {				
 		WYSize size = Director.getInstance().getWindowSize();
-		float scaleX = size.width / 10;
-		float scaleY = size.height / 10;
+		
+		float adaptX = size.width / 10;
+		float adaptY = size.height / 10;
+
 		
 		mBackground = Sprite.make(R.drawable.home_background);
+		float scaleX = size.width / mBackground.getWidth();
+		float scaleY = size.height / mBackground.getHeight();
+		mBackground.setScale(scaleX, scaleY);
 		mBackground.setPosition(size.width / 2, size.height / 2);
 		
 		
@@ -64,7 +70,7 @@ public class GameHomepage extends Scene {
 		
 		playButton = Button.make(playNormal, playSelected,null, null,
 				new TargetSelector(this, "onPlayButtonClicked",null));
-		playButton.setPosition((size.width / 2) - (scaleX * 2), (size.height / 2) - (scaleY) );
+		playButton.setPosition((size.width / 2) - (adaptX * 2), (size.height / 2) - (adaptY) );
 		
 		//关于按钮
 		Sprite aboutNormal = Sprite.make(about_normal,
@@ -73,7 +79,7 @@ public class GameHomepage extends Scene {
 				ResolutionIndependent.resolve(WYRect.make(0, -2, 180, 60)));
 		
 		aboutButton = Button.make(aboutNormal, aboutSelected, null, null);
-		aboutButton.setPosition((size.width / 2) + (scaleX * 2), (size.height / 2) - (scaleY));
+		aboutButton.setPosition((size.width / 2) + (adaptX * 2), (size.height / 2) - (adaptY));
 
 		//音乐按钮
 		Sprite MusicNormal = Sprite.make(music_normal,
@@ -90,8 +96,8 @@ public class GameHomepage extends Scene {
 		musicDisableButton = Button.make(MusicDisableNormal, MusicDisableSelected, null, null,
 				new TargetSelector(this, "onMusicDisableClicked", null));
 		
-		musicButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
-		musicDisableButton.setPosition((size.width / 2), (size.height /5) - (scaleY / 2));
+		musicButton.setPosition((size.width / 2), (size.height /5) - (adaptY / 2));
+		musicDisableButton.setPosition((size.width / 2), (size.height /5) - (adaptY / 2));
 		musicDisableButton.setVisible(false);
 		
 		//音效按钮
@@ -109,8 +115,8 @@ public class GameHomepage extends Scene {
 		soundDisableButton = Button.make(SoundDisableNormal, SoundDisableSelected, null, null,
 				new TargetSelector(this, "onSoundDisableClicked", null));
 		
-		soundButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));
-		soundDisableButton.setPosition((size.width / 2) + (scaleX + scaleY), (size.height / 5) - (scaleY / 2));	
+		soundButton.setPosition((size.width / 2) + (adaptX + adaptY), (size.height / 5) - (adaptY / 2));
+		soundDisableButton.setPosition((size.width / 2) + (adaptX + adaptY), (size.height / 5) - (adaptY / 2));	
 		soundDisableButton.setVisible(false);
 
 		//帮助按钮
@@ -121,7 +127,7 @@ public class GameHomepage extends Scene {
 		
 		helpButton = Button.make(HelpNormal, HelpSelected, null, null,
 				new TargetSelector(this, "onHelpClicked", null));
-		helpButton.setPosition((size.width / 2) + ((scaleX + scaleY) * 2), (size.height / 5) - (scaleY / 2));
+		helpButton.setPosition((size.width / 2) + ((adaptX + adaptY) * 2), (size.height / 5) - (adaptY / 2));
 						
 		addChild(mBackground);
 		
@@ -157,7 +163,9 @@ public class GameHomepage extends Scene {
     }
 	
 	public void onHelpClicked() {
-		
+		gameHelp = new GameHelp(GameHomepage.this);
+		gameHelp.autoRelease(true);
+		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, gameHelp, new WYColor3B(0, 0, 0)));
 	}
 	
 	//按Play跳转到难度选择
