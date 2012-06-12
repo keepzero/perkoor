@@ -1,6 +1,7 @@
 package com.android.perkoor.switcher;
 
 import com.android.perkoor.R;
+
 import com.android.perkoor.layer.CharacterLayer;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
@@ -15,7 +16,6 @@ import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
 import com.wiyun.engine.utils.TargetSelector;
 
-import data.Grade;
 
 public class GameOver extends Layer {
 	Scene gameHomepage;
@@ -75,7 +75,7 @@ public class GameOver extends Layer {
 		
 		totalscoreLabel = Label.make("Total Score：", 18, "Comic Sans MS.tff");
 		totalscoreLabel.setPosition((size.width / 2) - (zoomY * 2), (size.height) / 2 + (zoomY / 2));
-		totalscoredisplayLabel = Label.make(String.valueOf(Grade.GRADE), 18f, "Comic Sans MS.tff");
+		totalscoredisplayLabel = Label.make(String.valueOf(CharacterLayer.GRADE), 18f, "Comic Sans MS.tff");
 		totalscoredisplayLabel.setPosition((size.width / 2) - (zoomX + zoomY), (size.height) / 2 + (zoomY / 2));
 		
 		addChild(mGameoverground);

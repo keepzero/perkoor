@@ -1,6 +1,7 @@
 package com.android.perkoor.layer;
 
 import java.text.DecimalFormat;
+
 import java.text.NumberFormat;
 import java.util.Random;
 
@@ -35,9 +36,6 @@ import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
-
-import data.Grade;
-
 public class CharacterLayer extends Box2DLayer implements IContactListener {
 	Scene gameHomepage;
 	Layer gameoverLayer;
@@ -55,6 +53,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	//public static long GRADE=0;
 	FixtureAnimation anim;
 	float tempgrade;
+	public static long GRADE;
 	
 
 	boolean jump = false;
@@ -128,9 +127,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		mBox2D.setPosition(-pX + s.width / 3, 0);
 
 		tempgrade =body.getPosition().x*100;
-		Grade.GRADE =(long)tempgrade;
-		gradeLabel.setText(String.valueOf(Grade.GRADE));
-		System.out.println(Grade.GRADE);
+		GRADE =(long)tempgrade;
+		gradeLabel.setText(String.valueOf(GRADE));
+		System.out.println(GRADE);
 		// 屋顶生成   障碍物添加
 		{
 			if (pX > mLocation) {
