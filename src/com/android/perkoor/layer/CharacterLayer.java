@@ -1,7 +1,10 @@
 package com.android.perkoor.layer;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Random;
 
+import android.R.string;
 import android.view.MotionEvent;
 
 import com.android.perkoor.R;
@@ -22,6 +25,7 @@ import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.box2d.dynamics.World.IContactListener;
 import com.wiyun.engine.box2d.dynamics.contacts.Contact;
 import com.wiyun.engine.nodes.Director;
+import com.wiyun.engine.nodes.Label;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
@@ -31,6 +35,8 @@ import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
+
+import data.Grade;
 
 public class CharacterLayer extends Box2DLayer implements IContactListener {
 	Scene gameHomepage;
@@ -46,11 +52,14 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	static float highter = 13;
 	static float SPEED = 15;
 	int numNext = 1;
+	//public static long GRADE=0;
 	FixtureAnimation anim;
+	float tempgrade;
 	
 
 	boolean jump = false;
 	boolean run = true;
+	Label gradeLabel;
 	// box2d 的位置
 	float mLocation;
 
@@ -63,6 +72,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
 		mLocation = s.width;
 
+		gradeLabel = Label.make("0", 18, "Comic Sans MS.tff");
+		gradeLabel.setPosition((s.width-50),s.height-30);
+		addChild(gradeLabel);
 		mWorld.setGravity(0, -30);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
 		mBox2D.setPosition(0, 0);// 初始位置
@@ -115,6 +127,10 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width / 3, 0);
 
+		tempgrade =body.getPosition().x*100;
+		Grade.GRADE =(long)tempgrade;
+		gradeLabel.setText(String.valueOf(Grade.GRADE));
+		System.out.println(Grade.GRADE);
 		// 屋顶生成   障碍物添加
 		{
 			if (pX > mLocation) {
