@@ -3,6 +3,7 @@ package com.android.perkoor.switcher;
 import com.android.perkoor.R;
 
 import com.android.perkoor.layer.CharacterLayer;
+import com.android.perkoot.data.GradeData;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.INodeVirtualMethods;
@@ -70,13 +71,14 @@ public class GameOver extends Layer {
 		
 		
 		highscoredisplaylLabel=Label.make("999999", 18, "Comic Sans MS.tff");
-		highscoredisplaylLabel.setPosition((size.width / 2) - (zoomX + zoomY), (size.height) / 2 - (zoomY / 3));
+		highscoredisplaylLabel.setPosition((size.width / 2) + (zoomX + zoomY), (size.height) / 2 - (zoomY / 3));
 		
 		
 		totalscoreLabel = Label.make("Total Score：", 18, "Comic Sans MS.tff");
 		totalscoreLabel.setPosition((size.width / 2) - (zoomY * 2), (size.height) / 2 + (zoomY / 2));
-		totalscoredisplayLabel = Label.make(String.valueOf(CharacterLayer.GRADE), 18f, "Comic Sans MS.tff");
-		totalscoredisplayLabel.setPosition((size.width / 2) - (zoomX + zoomY), (size.height) / 2 + (zoomY / 2));
+		System.out.println("gameover   "+GradeData.Grade);
+		totalscoredisplayLabel = Label.make(String.valueOf(GradeData.Grade), 18f, "Comic Sans MS.tff");
+		totalscoredisplayLabel.setPosition((size.width / 2) + (zoomX + zoomY), (size.height) / 2 + (zoomY / 2));
 		
 		addChild(mGameoverground);
 		addChild(highscoreLabel);

@@ -14,6 +14,7 @@ import com.android.perkoor.barrier.Barrier;
 import com.android.perkoor.barrier.BarrierFactory;
 import com.android.perkoor.roof.*;
 import com.android.perkoor.switcher.GameOver;
+import com.android.perkoot.data.GradeData;
 import com.wiyun.engine.afcanim.SPX3Sprite;
 import com.wiyun.engine.afcanim.SPXSprite;
 import com.wiyun.engine.box2d.Box2DRender;
@@ -53,7 +54,6 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	//public static long GRADE=0;
 	FixtureAnimation anim;
 	float tempgrade;
-	public static long GRADE;
 	
 
 	boolean jump = false;
@@ -127,9 +127,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		mBox2D.setPosition(-pX + s.width / 3, 0);
 
 		tempgrade =body.getPosition().x*100;
-		GRADE =(long)tempgrade;
-		gradeLabel.setText(String.valueOf(GRADE));
-		System.out.println(GRADE);
+		GradeData.Grade =(long)tempgrade;
+		gradeLabel.setText(String.valueOf(GradeData.Grade));
+//		System.out.println(GradeData.Grade);
 		// 屋顶生成   障碍物添加
 		{
 			if (pX > mLocation) {
@@ -158,7 +158,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			/*Director director = Director.getInstance();
 			director.pauseUI();*/
 			gameoverLayer.setVisible(true);
-			System.out.println("game over");
+			GradeData.Grade =(long)tempgrade;
+			//System.out.println(GradeData.Grade);
+			//System.out.println("game over");
 		}
 
 
