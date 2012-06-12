@@ -130,7 +130,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 					trsPoint.x += mBox2D.pixel2Meter(tempRoof.sprite.getWidth()
 							/ numNext);
 					trsPoint.y += mBox2D.pixel2Meter(tempRoof.sprite
-							.getHeight() - 10f);
+							.getHeight() - 8f);
 					BarrierFactory.createBarrier(Barrier.getRandom(5), mWorld,
 							mBox2D, trsPoint);
 				}
