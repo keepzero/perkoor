@@ -15,6 +15,7 @@ import com.android.perkoor.switcher.GameHomepage;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Director.IDirectorLifecycleListener;
 import com.wiyun.engine.opengl.WYGLSurfaceView;
+import com.wiyun.engine.sound.AudioManager;
 
 public class PerkoorActivity extends Activity implements IDirectorLifecycleListener {
 	protected WYGLSurfaceView mGLSurfaceView;
@@ -72,23 +73,8 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
          */
 //        Director.getInstance().setScaleMode(Director.SCALE_MODE_BASE_SIZE_FIT_XY);
 //        Director.getInstance().setBaseSize(320, 480);
+        setVolumeControlStream(android.media.AudioManager.STREAM_MUSIC);
 	}
-	public void play1() {  
-        
-        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.jump);  
-        mMediaPlayer.setLooping(false);  
-        mMediaPlayer.start();*/
-    }  
-    public void play2() {  
-        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.boost);  
-        mMediaPlayer.setLooping(false);  
-        mMediaPlayer.start();*/  
-    }  
-    public void play3() {  
-        /*mMediaPlayer = MediaPlayer.create(GameView.this, R.raw.jump2);  
-        mMediaPlayer.setLooping(false);  
-        mMediaPlayer.start();*/  
-    }
     
 	protected void createScene() {
 		gameHomepage = new MyScene();
@@ -130,6 +116,8 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
     	
         super.onDestroy();
     }
+    
+    
     
     public void onDirectorPaused() {
     }
@@ -223,7 +211,7 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
             //　必须调用一次，使事件重定向到java端
             setKeyEnabled(true);
             
-            autoRelease(true);
+            autoRelease(true);            
 		}
 		
 		@Override

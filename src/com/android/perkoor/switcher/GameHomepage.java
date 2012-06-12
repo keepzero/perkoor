@@ -8,8 +8,10 @@ import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.transitions.ColorFadeTransition;
 import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
+import com.wiyun.engine.transitions.ZoomFlipAngularTransition;
 import com.wiyun.engine.types.WYColor3B;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
@@ -19,6 +21,8 @@ import com.wiyun.engine.utils.TargetSelector;
 public class GameHomepage extends Scene {	
 	GameDifficulty gameDifficulty;
 	GameHelp gameHelp;
+	GameAbout gameAbout;
+	
 	Sprite mBackground;
 	Button playButton;
 	Button aboutButton;
@@ -78,7 +82,8 @@ public class GameHomepage extends Scene {
 		Sprite aboutSelected = Sprite.make(about_selected,
 				ResolutionIndependent.resolve(WYRect.make(0, -2, 180, 60)));
 		
-		aboutButton = Button.make(aboutNormal, aboutSelected, null, null);
+		aboutButton = Button.make(aboutNormal, aboutSelected, null, null,
+				new TargetSelector(this, "onAboutButtonClicked",null));
 		aboutButton.setPosition((size.width / 2) + (adaptX * 2), (size.height / 2) - (adaptY));
 
 		//音乐按钮
@@ -138,18 +143,20 @@ public class GameHomepage extends Scene {
 		addChild(soundButton);
 		addChild(soundDisableButton);
 		addChild(helpButton);	
-		
-		
+		AudioManager.preloadEffect(R.raw.gameplaying, AudioManager.FORMAT_OGG);
+		onPlay();		
 	}		
 	
 	public void onMusicClicked() {		
 		musicButton.setVisible(false);
 		musicDisableButton.setVisible(true);
+		onStop();
 	}
 	
 	public void onMusicDisableClicked() {
 		musicDisableButton.setVisible(false);
 		musicButton.setVisible(true);
+		onPlay();
 	}
 	
 	public void onSoundClicked() {
@@ -165,15 +172,28 @@ public class GameHomepage extends Scene {
 	public void onHelpClicked() {
 		gameHelp = new GameHelp(GameHomepage.this);
 		gameHelp.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, gameHelp, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(ZoomFlipAngularTransition.make(1f, gameHelp, true, 0.5f));
 	}
 	
 	//按Play跳转到难度选择
 	public void onPlayButtonClicked() {			
 		gameDifficulty = new GameDifficulty(GameHomepage.this);
 		gameDifficulty.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, gameDifficulty, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, gameDifficulty, new WYColor3B(0, 0, 0)));
 		//Director.getInstance().replaceScene(LeftBottomTilesShrinkOutTransition.make(1, gameDifficulty));
 	}
 	
+	public void onAboutButtonClicked() {
+		gameAbout = new GameAbout(GameHomepage.this);
+		gameAbout.autoRelease(true);
+		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, gameAbout, new WYColor3B(0, 0, 0)));
+	}
+	
+	public void onPlay() {
+		AudioManager.playBackgroundMusic(R.raw.gameplaying, AudioManager.FORMAT_OGG, -1);
+	}
+
+	public void onStop() {
+		AudioManager.stopBackgroundMusic();
+	}
 }

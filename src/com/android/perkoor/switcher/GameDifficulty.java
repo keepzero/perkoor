@@ -98,19 +98,19 @@ public class GameDifficulty extends Scene {
 	public void onEasyButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
 	}	
 	
 	public void onNormalButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 	
 	public void onHardButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make((float) 1, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
 	}
 
 	public boolean onBackButtonClicked() {
