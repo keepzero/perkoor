@@ -104,21 +104,21 @@ public class GameDifficulty extends Scene {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
-		Director.getInstance().replaceScene(PageTurn3DTransition.make(1f, perkoorScene));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 3));
 	}	
 	
 	public void onNormalButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
-		Director.getInstance().replaceScene(RadialCCWTransition.make(1f, perkoorScene));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 5));
 	}
 	
 	public void onHardButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
 		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
-		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 5));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 7));
 	}
 
 	public boolean onBackButtonClicked() {

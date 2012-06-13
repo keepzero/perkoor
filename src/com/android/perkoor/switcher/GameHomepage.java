@@ -26,6 +26,7 @@ public class GameHomepage extends Scene {
 	GameAbout gameAbout;
 	
 	Sprite mBackground;
+	Sprite wiengineLogo;
 	Button playButton;
 	Button aboutButton;
 	Button musicButton;
@@ -138,6 +139,11 @@ public class GameHomepage extends Scene {
 		helpButton = Button.make(HelpNormal, HelpSelected, null, null,
 				new TargetSelector(this, "onHelpClicked", null));
 		helpButton.setPosition((size.width / 2) + ((adaptX + adaptY) * 2), (size.height / 5) - (adaptY / 2));
+		
+		wiengineLogo = Sprite.make(R.drawable.wiengine_logo);		
+		wiengineLogo.setScale(scaleX, scaleY);
+		wiengineLogo.setPosition(100, 40);
+		
 						
 		addChild(mBackground);
 		
@@ -147,7 +153,8 @@ public class GameHomepage extends Scene {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
-		addChild(helpButton);	
+		addChild(helpButton);
+		addChild(wiengineLogo);
 		AudioManager.preloadEffect(R.raw.gameloading, AudioManager.FORMAT_OGG);
 		onStop();
 		onPlay();		
