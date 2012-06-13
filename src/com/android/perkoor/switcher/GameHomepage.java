@@ -47,9 +47,6 @@ public class GameHomepage extends Scene {
 
 		
 		mBackground = Sprite.make(R.drawable.home_background);
-		float scaleX = size.width / mBackground.getWidth();
-		float scaleY = size.height / mBackground.getHeight();
-		mBackground.setScale(scaleX, scaleY);
 		mBackground.setPosition(size.width / 2, size.height / 2);
 		
 		
@@ -140,9 +137,17 @@ public class GameHomepage extends Scene {
 				new TargetSelector(this, "onHelpClicked", null));
 		helpButton.setPosition((size.width / 2) + ((adaptX + adaptY) * 2), (size.height / 5) - (adaptY / 2));
 		
-		wiengineLogo = Sprite.make(R.drawable.wiengine_logo);		
-		wiengineLogo.setScale(scaleX, scaleY);
-		wiengineLogo.setPosition(100, 40);
+		wiengineLogo = Sprite.make(R.drawable.wiengine_logo);
+		float scaleX = size.width / 800;
+		float scaleY = size.height / 480;
+		if(size.width > 800 || size.height > 480)
+		{
+			wiengineLogo.setPosition(100, 40);
+		}
+		else {
+			wiengineLogo.setScale(scaleX, scaleY);
+			wiengineLogo.setPosition(80 * scaleX, 30 * scaleY);
+		}	
 		
 						
 		addChild(mBackground);
