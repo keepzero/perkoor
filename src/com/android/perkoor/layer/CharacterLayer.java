@@ -37,6 +37,7 @@ import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
+
 public class CharacterLayer extends Box2DLayer implements IContactListener {
 	Scene gameHomepage;
 	Layer gameoverLayer;
@@ -48,13 +49,18 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	float X_sta = 0, X_end = 0; // 初始与终止x 轴 坐标 触摸点声明
 	float tital_x = 0, tital_y = 0; // 手指滑动距离
 	static float hight = 5; // 跳跃高度声明
+	static float highter1 = 8;
+	static float highter2 = 11;
+	static float highter3 = 14;
+	static float highter4 = 17;
+	static float highter5 = 20;
+	static float highter6 = 23;
 	static float highter = 13;
 	static float SPEED = 15;
 	int numNext = 1;
-	//public static long GRADE=0;
+	// public static long GRADE=0;
 	FixtureAnimation anim;
 	float tempgrade;
-	
 
 	boolean jump = false;
 	boolean run = true;
@@ -67,12 +73,12 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		this.gameHomepage = gameHomepage;
 		addChild(gameoverLayer);
 		gameoverLayer.setVisible(false);
-		
+
 		s = Director.getInstance().getWindowSize();// 获取屏幕尺寸
 		mLocation = s.width;
 
 		gradeLabel = Label.make("0", 18, "Comic Sans MS.tff");
-		gradeLabel.setPosition((s.width-50),s.height-30);
+		gradeLabel.setPosition((s.width - 50), s.height - 30);
 		addChild(gradeLabel);
 		mWorld.setGravity(0, -30);// 设置世界的重力加速度
 		mBox2D.setDebugDraw(false);// 设置刚体贴图模式，表示可以进行贴图
@@ -126,11 +132,11 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// 设置 Box2D 世界跟随人物
 		mBox2D.setPosition(-pX + s.width / 3, 0);
 
-		tempgrade =body.getPosition().x*100;
-		GradeData.Grade =(long)tempgrade;
+		tempgrade = body.getPosition().x * 100;
+		GradeData.Grade = (long) tempgrade;
 		gradeLabel.setText(String.valueOf(GradeData.Grade));
-//		System.out.println(GradeData.Grade);
-		// 屋顶生成   障碍物添加
+		// System.out.println(GradeData.Grade);
+		// 屋顶生成 障碍物添加
 		{
 			if (pX > mLocation) {
 
@@ -154,15 +160,15 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		}
 		// 游戏结束标志
 
-		if(isOver()){
-			/*Director director = Director.getInstance();
-			director.pauseUI();*/
+		if (isOver()) {
+			/*
+			 * Director director = Director.getInstance(); director.pauseUI();
+			 */
 			gameoverLayer.setVisible(true);
-			GradeData.Grade =(long)tempgrade;
-			//System.out.println(GradeData.Grade);
-			//System.out.println("game over");
+			GradeData.Grade = (long) tempgrade;
+			// System.out.println(GradeData.Grade);
+			// System.out.println("game over");
 		}
-
 
 		// TODO 循环屋顶
 		// 线程
@@ -182,7 +188,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 	@Override
 	public boolean wyTouchesEnded(MotionEvent event) {
-		// TODO Auto-generated method stub
+
 		WYPoint loc = Director.getInstance().convertToGL(event.getX(),
 				event.getY());
 		X_end = loc.x;
@@ -193,8 +199,21 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		tital_y = Y_end - Y_sta; // y轴距离差
 		tital_x = X_end - X_sta; // x轴距离差
 
-		if (tital_x > 10 && tital_y > 10) { // 判断是否起跳
-			jump();
+		if (tital_x > 10 && tital_y > 20) { // 判断是否起跳
+			if (tital_y < 40) {
+				jump(hight);
+			} else if (tital_y < 80) {
+				jump(highter1);
+			} else if (tital_y < 120) {
+				jump(highter2);
+			} else if (tital_y < 180) {
+				jump(highter4);
+			} else if (tital_y < 240) {
+				jump(highter5);
+			} else {
+				jump(highter6);
+			}
+			// jump();
 		}
 
 		if (tital_x > 0 && tital_y < 0) { // 判断下蹲
@@ -204,7 +223,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		return true;
 	}
 
-	public void jump() { // 起跳
+	private int jumpCount = 0;
+
+	/*public void jump() { // 起跳
 
 		WYPoint WH;
 		WH = WYPoint.make(SPEED, highter);
@@ -216,6 +237,28 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 		animJump.start(f);
 		jump = true;
+
+	}*/
+
+	public void jump(float hi) { // 起跳
+		
+		if (jumpCount < 2) {
+
+			jumpCount++;
+			
+			WYPoint WH;
+			WH = WYPoint.make(SPEED, hi);
+			body.setLinearVelocity(WH); // 设置速度
+			FixtureAnimation animJump = FixtureAnimation.make(0.2f,
+					R.drawable.jump1, R.drawable.jump2, R.drawable.jump3,
+					R.drawable.jump4, R.drawable.jump5, R.drawable.jump6);
+			animJump.setLoop(false);
+
+			animJump.start(f);
+			jump = true;
+		}
+		
+		
 
 	}
 
@@ -276,6 +319,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			 * anim.start(f);
 			 */
 			jump = false;
+			jumpCount = 0;
 
 		}
 
