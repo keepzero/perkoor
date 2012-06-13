@@ -164,6 +164,9 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			/*
 			 * Director director = Director.getInstance(); director.pauseUI();
 			 */
+			Director director = Director.getInstance();
+			director.pauseUI();
+			
 			gameoverLayer.setVisible(true);
 			GradeData.Grade = (long) tempgrade;
 			// System.out.println(GradeData.Grade);
@@ -199,8 +202,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		tital_y = Y_end - Y_sta; // y轴距离差
 		tital_x = X_end - X_sta; // x轴距离差
 
-		if (tital_x > 10 && tital_y > 20) { // 判断是否起跳
-			if (tital_y < 40) {
+		if (tital_x > 10 && tital_y > 40) { // 判断是否起跳
+			/*if (tital_y < 40) {
 				jump(hight);
 			} else if (tital_y < 80) {
 				jump(highter1);
@@ -212,7 +215,8 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 				jump(highter5);
 			} else {
 				jump(highter6);
-			}
+			}*/
+			jump(tital_y / 18);
 			// jump();
 		}
 
@@ -255,7 +259,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			animJump.setLoop(false);
 
 			animJump.start(f);
-			jump = true;
+			//jump = true;
 		}
 		
 		
@@ -318,7 +322,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			 * System.out.println("contact"); //anim.stop(); anim.setLoop(true);
 			 * anim.start(f);
 			 */
-			jump = false;
+			//jump = false;
 			jumpCount = 0;
 
 		}
