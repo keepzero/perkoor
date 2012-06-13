@@ -12,6 +12,7 @@ import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
@@ -30,6 +31,9 @@ public class GameOver extends Layer {
 	Label totalscoreLabel;
 	Label highscoredisplaylLabel;
 	Label totalscoredisplayLabel;
+	
+	public boolean isMusicPlay = GameHomepage.isMusicPlay;
+	public boolean isSoundPlay = GameHomepage.isSoundPlay;
 	
 	public GameOver(Scene gameHomepage) {
 		this.gameHomepage = gameHomepage;
@@ -95,12 +99,28 @@ public class GameOver extends Layer {
 		Director director = Director.getInstance();
 		director.resumeUI();
 		Director.getInstance().replaceScene(perkoorScene);
+		if(isMusicPlay == true)
+		{
+			onStop();
+			onPlay_Restart();
+		}
+		else if(isMusicPlay == false){
+			onStop();
+		}
 	}
 	
 	public void onHomeButtonClicked() {
 		Director director = Director.getInstance();
 		director.resumeUI();
 		Director.getInstance().replaceScene(gameHomepage);
+		if(isMusicPlay == true)
+		{
+			onStop();
+			onPlay_Home();
+		}
+		else if(isMusicPlay == false){
+			onStop();
+		}
 	}
 	
 	protected boolean onBackButton() {
@@ -108,5 +128,17 @@ public class GameOver extends Layer {
 		director.resumeUI();
 		Director.getInstance().replaceScene(gameHomepage);
 		return true;
+	}
+	
+	public void onPlay_Home() {
+		AudioManager.playBackgroundMusic(R.raw.gameloading, AudioManager.FORMAT_OGG, -1);
+	}
+	
+	public void onPlay_Restart() {
+		AudioManager.playBackgroundMusic(R.raw.gameplaying, AudioManager.FORMAT_OGG, -1);
+	}
+
+	public void onStop() {
+		AudioManager.stopBackgroundMusic();
 	}
 }

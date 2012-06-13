@@ -158,15 +158,14 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 
 			}
 		}
+		
 		// 游戏结束标志
-
 		if (isOver()) {
 			/*
 			 * Director director = Director.getInstance(); director.pauseUI();
 			 */
 			Director director = Director.getInstance();
 			director.pauseUI();
-			
 			gameoverLayer.setVisible(true);
 			GradeData.Grade = (long) tempgrade;
 			// System.out.println(GradeData.Grade);

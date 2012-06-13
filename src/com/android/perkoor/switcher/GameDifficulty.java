@@ -7,8 +7,12 @@ import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.transitions.ColorFadeTransition;
+import com.wiyun.engine.transitions.PageTurn3DTransition;
+import com.wiyun.engine.transitions.RadialCCWTransition;
 import com.wiyun.engine.transitions.RightTopTilesShrinkOutTransition;
+import com.wiyun.engine.transitions.SplitRowsTransition;
 import com.wiyun.engine.types.WYColor3B;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
@@ -93,24 +97,28 @@ public class GameDifficulty extends Scene {
 		addChild(normalButton);
 		addChild(hardButton);
 		addChild(backButton);
+		
 	}
 
 	public void onEasyButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 3));
 	}	
 	
 	public void onNormalButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 5));
 	}
 	
 	public void onHardButtonClicked() {
 		perkoorScene = new GamePlaying(gameHomepage);
 		perkoorScene.autoRelease(true);
-		Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		//Director.getInstance().replaceScene(ColorFadeTransition.make(1f, perkoorScene, new WYColor3B(0, 0, 0)));
+		Director.getInstance().replaceScene(SplitRowsTransition.make(1f, perkoorScene, 7));
 	}
 
 	public boolean onBackButtonClicked() {

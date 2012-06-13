@@ -61,7 +61,7 @@ public class PerkoorActivity extends Activity implements IDirectorLifecycleListe
         setContentView(mGLSurfaceView);
         
         // 设置显示帧率，程序发布时应该去掉
-        Director.getInstance().setDisplayFPS(true);
+        //Director.getInstance().setDisplayFPS(true);
 
         // 添加一个生命周期监听器，如果不需要可以不添加
         Director.getInstance().addLifecycleListener(this);

@@ -1,6 +1,8 @@
 package com.android.perkoor.switcher;
 
 
+import android.R.bool;
+
 import com.android.perkoor.R;
 
 import com.wiyun.engine.nodes.Button;
@@ -24,6 +26,7 @@ public class GameHomepage extends Scene {
 	GameAbout gameAbout;
 	
 	Sprite mBackground;
+	Sprite wiengineLogo;
 	Button playButton;
 	Button aboutButton;
 	Button musicButton;
@@ -31,6 +34,9 @@ public class GameHomepage extends Scene {
 	Button soundButton;
 	Button soundDisableButton;
 	Button helpButton;
+	
+	public static boolean isMusicPlay = true;
+	public static boolean isSoundPlay = true;
 
 	
 	public GameHomepage() {				
@@ -41,9 +47,6 @@ public class GameHomepage extends Scene {
 
 		
 		mBackground = Sprite.make(R.drawable.home_background);
-		float scaleX = size.width / mBackground.getWidth();
-		float scaleY = size.height / mBackground.getHeight();
-		mBackground.setScale(scaleX, scaleY);
 		mBackground.setPosition(size.width / 2, size.height / 2);
 		
 		
@@ -133,6 +136,19 @@ public class GameHomepage extends Scene {
 		helpButton = Button.make(HelpNormal, HelpSelected, null, null,
 				new TargetSelector(this, "onHelpClicked", null));
 		helpButton.setPosition((size.width / 2) + ((adaptX + adaptY) * 2), (size.height / 5) - (adaptY / 2));
+		
+		wiengineLogo = Sprite.make(R.drawable.wiengine_logo);
+		float scaleX = size.width / 800;
+		float scaleY = size.height / 480;
+		if(size.width > 800 || size.height > 480)
+		{
+			wiengineLogo.setPosition(100, 40);
+		}
+		else {
+			wiengineLogo.setScale(scaleX, scaleY);
+			wiengineLogo.setPosition(80 * scaleX, 30 * scaleY);
+		}	
+		
 						
 		addChild(mBackground);
 		
@@ -142,8 +158,10 @@ public class GameHomepage extends Scene {
 		addChild(musicDisableButton);
 		addChild(soundButton);
 		addChild(soundDisableButton);
-		addChild(helpButton);	
-		AudioManager.preloadEffect(R.raw.gameplaying, AudioManager.FORMAT_OGG);
+		addChild(helpButton);
+		addChild(wiengineLogo);
+		AudioManager.preloadEffect(R.raw.gameloading, AudioManager.FORMAT_OGG);
+		onStop();
 		onPlay();		
 	}		
 	
@@ -151,6 +169,7 @@ public class GameHomepage extends Scene {
 		musicButton.setVisible(false);
 		musicDisableButton.setVisible(true);
 		onStop();
+		
 	}
 	
 	public void onMusicDisableClicked() {
@@ -190,10 +209,15 @@ public class GameHomepage extends Scene {
 	}
 	
 	public void onPlay() {
-		AudioManager.playBackgroundMusic(R.raw.gameplaying, AudioManager.FORMAT_OGG, -1);
+		AudioManager.playBackgroundMusic(R.raw.gameloading, AudioManager.FORMAT_OGG, -1);
+		isMusicPlay = true;
+		isSoundPlay = true;
 	}
 
 	public void onStop() {
 		AudioManager.stopBackgroundMusic();
+		isMusicPlay = false;
+		isSoundPlay = false;
+		
 	}
 }
