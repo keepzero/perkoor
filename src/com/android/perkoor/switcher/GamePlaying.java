@@ -11,6 +11,7 @@ import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
+import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
@@ -22,6 +23,9 @@ public class GamePlaying extends Scene {
 	Scene gameHomepage;
 	
 	Layer gamePause;
+	
+	public boolean isMusicPlay = GameHomepage.isMusicPlay;
+	public boolean isSoundPlay = GameHomepage.isSoundPlay;
 	
 	public GamePlaying(Scene gameHomepage) {
 		gamePause = new GamePause(gameHomepage);
@@ -49,6 +53,15 @@ public class GamePlaying extends Scene {
 		addChild(pauseButton);
 		addChild(gamePause);
 		gamePause.setVisible(false);
+		AudioManager.preloadEffect(R.raw.gameplaying, AudioManager.FORMAT_OGG);
+		if(isMusicPlay == true)
+		{
+			onStop();
+			onPlay();
+		}
+		else if(isMusicPlay == false){
+			onStop();
+		}
 	}
 	
 	public void onPauseButtonClicked() {
@@ -65,5 +78,14 @@ public class GamePlaying extends Scene {
 		director.pauseUI();
 		
 		return true;
+	}
+	
+	public void onPlay() {
+		AudioManager.playBackgroundMusic(R.raw.gameplaying, AudioManager.FORMAT_OGG, -1);
+		System.out.println("gameplaying is onPlay");
+	}
+
+	public void onStop() {
+		AudioManager.stopBackgroundMusic();
 	}
 }

@@ -1,6 +1,8 @@
 package com.android.perkoor.switcher;
 
 
+import android.R.bool;
+
 import com.android.perkoor.R;
 
 import com.wiyun.engine.nodes.Button;
@@ -31,6 +33,9 @@ public class GameHomepage extends Scene {
 	Button soundButton;
 	Button soundDisableButton;
 	Button helpButton;
+	
+	public static boolean isMusicPlay = true;
+	public static boolean isSoundPlay = true;
 
 	
 	public GameHomepage() {				
@@ -143,7 +148,8 @@ public class GameHomepage extends Scene {
 		addChild(soundButton);
 		addChild(soundDisableButton);
 		addChild(helpButton);	
-		AudioManager.preloadEffect(R.raw.gameplaying, AudioManager.FORMAT_OGG);
+		AudioManager.preloadEffect(R.raw.gameloading, AudioManager.FORMAT_OGG);
+		onStop();
 		onPlay();		
 	}		
 	
@@ -151,6 +157,7 @@ public class GameHomepage extends Scene {
 		musicButton.setVisible(false);
 		musicDisableButton.setVisible(true);
 		onStop();
+		
 	}
 	
 	public void onMusicDisableClicked() {
@@ -190,10 +197,15 @@ public class GameHomepage extends Scene {
 	}
 	
 	public void onPlay() {
-		AudioManager.playBackgroundMusic(R.raw.gameplaying, AudioManager.FORMAT_OGG, -1);
+		AudioManager.playBackgroundMusic(R.raw.gameloading, AudioManager.FORMAT_OGG, -1);
+		isMusicPlay = true;
+		isSoundPlay = true;
 	}
 
 	public void onStop() {
 		AudioManager.stopBackgroundMusic();
+		isMusicPlay = false;
+		isSoundPlay = false;
+		
 	}
 }
