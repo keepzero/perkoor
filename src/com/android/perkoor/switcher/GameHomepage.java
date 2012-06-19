@@ -1,8 +1,5 @@
 package com.android.perkoor.switcher;
 
-
-import android.R.bool;
-
 import com.android.perkoor.R;
 
 import com.wiyun.engine.nodes.Button;
@@ -12,7 +9,6 @@ import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.transitions.ColorFadeTransition;
-import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
 import com.wiyun.engine.transitions.ZoomFlipAngularTransition;
 import com.wiyun.engine.types.WYColor3B;
 import com.wiyun.engine.types.WYRect;

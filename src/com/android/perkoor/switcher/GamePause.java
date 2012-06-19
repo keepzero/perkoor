@@ -1,7 +1,5 @@
 package com.android.perkoor.switcher;
 
-import android.R.layout;
-
 import com.android.perkoor.R;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;

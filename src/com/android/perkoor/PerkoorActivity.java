@@ -15,7 +15,6 @@ import com.android.perkoor.switcher.GameHomepage;
 import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Director.IDirectorLifecycleListener;
 import com.wiyun.engine.opengl.WYGLSurfaceView;
-import com.wiyun.engine.sound.AudioManager;
 
 public class PerkoorActivity extends Activity implements IDirectorLifecycleListener {
 	protected WYGLSurfaceView mGLSurfaceView;

@@ -1,7 +1,6 @@
 package com.android.perkoor.layer;
 
 import com.android.perkoor.R;
-import com.android.perkoor.R.drawable;
 import com.wiyun.engine.box2d.Box2DRender;
 import com.wiyun.engine.box2d.collision.PolygonShape;
 import com.wiyun.engine.box2d.dynamics.Body;
@@ -9,7 +8,6 @@ import com.wiyun.engine.box2d.dynamics.BodyDef;
 import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.FixtureDef;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
@@ -61,4 +59,5 @@ public class RoadLayer extends Box2DLayer {
 		//f.getBody().setTransform(CharacterLayer.carPos.x, 10f, 0f);
 
 	}
+	
 }

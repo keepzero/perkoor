@@ -7,7 +7,6 @@ import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
 import com.wiyun.engine.transitions.RightTopTilesShrinkOutTransition;
-import com.wiyun.engine.transitions.ZoomFlipAngularTransition;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.ResolutionIndependent;
@@ -21,7 +20,7 @@ public class GameAbout extends Scene {
 	public GameAbout(Scene gameHomepage) {
 		this.gameHomepage = gameHomepage;
 		WYSize size = Director.getInstance().getWindowSize();
-		gameAbout = Sprite.make(R.drawable.help_background);
+		gameAbout = Sprite.make(R.drawable.about_background);
 		float scaleX = size.width / gameAbout.getWidth();
 		float scaleY = size.height / gameAbout.getHeight();
 		gameAbout.setScale(scaleX, scaleY);

@@ -22,7 +22,6 @@
 package com.android.perkoor.layer;
 
  
-import android.view.MotionEvent;
 
 import com.wiyun.engine.box2d.Box2D;
 import com.wiyun.engine.box2d.dynamics.Body;
@@ -31,8 +30,6 @@ import com.wiyun.engine.box2d.dynamics.Fixture;
 import com.wiyun.engine.box2d.dynamics.World;
 import com.wiyun.engine.box2d.dynamics.World.IQueryCallback;
 import com.wiyun.engine.box2d.dynamics.joints.MouseJoint;
-import com.wiyun.engine.box2d.dynamics.joints.MouseJointDef;
-import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.types.WYPoint;
 

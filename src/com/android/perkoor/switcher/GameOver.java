@@ -2,11 +2,9 @@ package com.android.perkoor.switcher;
 
 import com.android.perkoor.R;
 
-import com.android.perkoor.layer.CharacterLayer;
 import com.android.perkoot.data.GradeData;
 import com.wiyun.engine.nodes.Button;
 import com.wiyun.engine.nodes.Director;
-import com.wiyun.engine.nodes.INodeVirtualMethods;
 import com.wiyun.engine.nodes.Label;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;

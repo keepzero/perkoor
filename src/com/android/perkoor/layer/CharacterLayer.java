@@ -1,11 +1,7 @@
 package com.android.perkoor.layer;
 
-import java.text.DecimalFormat;
-
-import java.text.NumberFormat;
 import java.util.Random;
 
-import android.R.string;
 import android.view.MotionEvent;
 
 import com.android.perkoor.R;
@@ -15,8 +11,6 @@ import com.android.perkoor.barrier.BarrierFactory;
 import com.android.perkoor.roof.*;
 import com.android.perkoor.switcher.GameOver;
 import com.android.perkoot.data.GradeData;
-import com.wiyun.engine.afcanim.SPX3Sprite;
-import com.wiyun.engine.afcanim.SPXSprite;
 import com.wiyun.engine.box2d.Box2DRender;
 import com.wiyun.engine.box2d.FixtureAnimation;
 import com.wiyun.engine.box2d.collision.PolygonShape;
@@ -30,10 +24,7 @@ import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Label;
 import com.wiyun.engine.nodes.Layer;
 import com.wiyun.engine.nodes.Scene;
-import com.wiyun.engine.nodes.Sprite;
-import com.wiyun.engine.afcanim.AFCSprite.IAFCSpriteCallback;
-import com.wiyun.engine.opengl.Texture2D;
-import com.wiyun.engine.transitions.LeftBottomTilesShrinkOutTransition;
+import com.wiyun.engine.sound.AudioManager;
 import com.wiyun.engine.types.WYPoint;
 import com.wiyun.engine.types.WYSize;
 import com.wiyun.engine.utils.TargetSelector;
@@ -244,10 +235,13 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 	}*/
 
 	public void jump(float hi) { // 起跳
-		
+		AudioManager.stopEffect(R.raw.running);
 		if (jumpCount < 2) {
 
 			jumpCount++;
+			if(jumpCount == 1) {
+				AudioManager.playEffect(R.raw.jump);
+			}
 			
 			WYPoint WH;
 			WH = WYPoint.make(SPEED, hi);
@@ -258,6 +252,7 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			animJump.setLoop(false);
 
 			animJump.start(f);
+			
 			//jump = true;
 		}
 		
@@ -323,8 +318,10 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 			 */
 			//jump = false;
 			jumpCount = 0;
+			AudioManager.playEffect(R.raw.touchdown);
 
 		}
+		onRunningEffect();
 
 	}
 
@@ -351,4 +348,17 @@ public class CharacterLayer extends Box2DLayer implements IContactListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void onRunningEffect() {
+		AudioManager.playEffect(R.raw.running);
+
+	}
+//	
+//	public void onJumpEffect() {
+//		AudioManager.playEffect(R.raw.jump);
+//	}
+//	
+//	public void onTouchDown() {
+//		AudioManager.playEffect(R.raw.touchdown);
+//	}
 }

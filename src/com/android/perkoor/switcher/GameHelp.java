@@ -7,7 +7,6 @@ import com.wiyun.engine.nodes.Director;
 import com.wiyun.engine.nodes.Scene;
 import com.wiyun.engine.nodes.Sprite;
 import com.wiyun.engine.opengl.Texture2D;
-import com.wiyun.engine.transitions.RightTopTilesShrinkOutTransition;
 import com.wiyun.engine.transitions.ZoomFlipAngularTransition;
 import com.wiyun.engine.types.WYRect;
 import com.wiyun.engine.types.WYSize;
